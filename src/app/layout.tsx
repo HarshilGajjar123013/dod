@@ -4,6 +4,7 @@ import "./globals.css";
 import "./globals.scss";
 import Preloader from "@/components/common/Preloader/Preloader";
 import Navbar from "@/components/common/Navbar/Navbar";
+import Footer from "@/components/common/Footer";
 
 const marcellus = Marcellus({
   weight: "400",
@@ -58,11 +59,13 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${marcellus.variable} ${playfair.variable} ${poppins.variable} ${smoochSans.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col relative" suppressHydrationWarning>
         <Preloader />
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

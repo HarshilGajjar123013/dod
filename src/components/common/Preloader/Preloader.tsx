@@ -95,9 +95,24 @@ const Preloader: React.FC = () => {
           <div className="palace-silhouette" />
 
           <div className="preloader-main">
-            {/* Mandala Logo */}
+            {/* Brand Logo */}
             <div className="mandala-container">
-              <MandalaSVG />
+              <motion.img 
+                src="/logo.png" 
+                alt="Logo" 
+                className="preloader-logo-img"
+                initial={{ rotate: 0, scale: 0.8, opacity: 0 }}
+                animate={{ 
+                  rotate: 360, 
+                  scale: 1, 
+                  opacity: 1,
+                  transition: { 
+                    rotate: { duration: 45, repeat: Infinity, ease: "linear" },
+                    scale: { duration: 2, ease: "easeOut" },
+                    opacity: { duration: 1.5 }
+                  }
+                }}
+              />
             </div>
 
             {/* Brand Name */}
@@ -107,7 +122,7 @@ const Preloader: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 1 }}
             >
-              HERITAGE
+              DESIGNS OF DREAMS
             </motion.h1>
 
             {/* Dots */}
