@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useStore } from "@/store/useStore";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Home, 
   Compass, 
@@ -14,34 +14,28 @@ import {
   Settings 
 } from "lucide-react";
 
-// Custom SVG background with a smooth dip in the center (for width 100%, height 76px)
-const NavBackground = () => {
-  return (
-    <div className="absolute inset-0 -z-10 filter drop-shadow-[0_-10px_25px_rgba(0,0,0,0.06)]">
-      <svg
-        width="100%"
-        height="76"
-        viewBox="0 0 100 76"
-        preserveAspectRatio="none"
-        className="fill-white stroke-[#C5A059]/15"
-      >
-        <path
-          d="M 0 20 
-             Q 0 10 10 10
-             L 34 10
-             Q 40 10 42 16
-             A 11 11 0 0 0 58 16
-             Q 60 10 66 10
-             L 90 10
-             Q 100 10 100 20
-             L 100 76
-             L 0 76
-             Z"
-          strokeWidth="0.5"
-        />
-      </svg>
-    </div>
-  );
+// Path generator that creates a smooth circular dip centered on the active tab's column position
+const getPath = (index: number) => {
+  const step = 100 / 6;
+  const x = (index + 0.5) * step;
+  
+  // Custom dip transition coordinates (clamped to remain within 0-100 bounds)
+  const x1 = x - 8.5;
+  const x2 = x - 4.5;
+  const x3 = x + 4.5;
+  const x4 = x + 8.5;
+  
+  return `M 0 20 
+          Q 0 10 10 10
+          L ${Math.max(0, x1)} 10
+          Q ${x2} 10 ${x - 3.5} 15.5
+          A 6.5 6.5 0 0 0 ${x + 3.5} 15.5
+          Q ${x3} 10 ${Math.min(100, x4)} 10
+          L 90 10
+          Q 100 10 100 20
+          L 100 76
+          L 0 76
+          Z`;
 };
 
 export default function MobileBottomNav() {
@@ -56,205 +50,177 @@ export default function MobileBottomNav() {
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
   const wishlistCount = wishlist.length;
 
-  const leftNavItems = [
+  const navItems = [
     {
       label: "Home",
       href: "/",
       icon: Home,
-      isActive: pathname === "/",
-      animate: {
-        active: { scale: 1.12, y: -2 },
-        inactive: { scale: 1, y: 0 }
-      }
     },
     {
       label: "Shop",
       href: "/collection",
       icon: Compass,
-      isActive: pathname?.startsWith("/collection"),
-      animate: {
-        active: { scale: 1.12, rotate: 45, y: -2 },
-        inactive: { scale: 1, rotate: 0, y: 0 }
-      }
     },
-  ];
-
-  const rightNavItems = [
     {
       label: "Fav",
       href: "/wishlist",
-      icon: Heart,
       badge: wishlistCount,
-      isActive: pathname === "/wishlist",
-      animate: {
-        active: { scale: [1, 1.25, 1.12], y: -2, transition: { duration: 0.4 } },
-        inactive: { scale: 1, y: 0 }
-      }
+      icon: Heart,
+    },
+    {
+      label: "Cart",
+      href: "/cart",
+      badge: cartCount,
+      icon: ShoppingBag,
     },
     {
       label: "Profile",
       href: "/login",
       icon: User,
-      isActive: pathname === "/login",
       avatarLabel: user?.isLoggedIn ? user.name.charAt(0).toUpperCase() : null,
-      animate: {
-        active: { scale: 1.12, y: -2 },
-        inactive: { scale: 1, y: 0 }
-      }
     },
     {
       label: "Setting",
       href: "/settings",
       icon: Settings,
-      isActive: pathname === "/settings",
-      animate: {
-        active: { scale: 1.12, rotate: 90, y: -2 },
-        inactive: { scale: 1, rotate: 0, y: 0 }
-      }
     },
   ];
 
+  // Helper to resolve active index
+  const getActiveIndex = () => {
+    if (pathname === "/") return 0;
+    if (pathname?.startsWith("/collection") || pathname?.startsWith("/product")) return 1;
+    if (pathname === "/wishlist") return 2;
+    if (pathname === "/cart") return 3;
+    if (pathname === "/login") return 4;
+    if (pathname === "/settings") return 5;
+    return 0;
+  };
+
+  const activeIndex = getActiveIndex();
+  const activeItem = navItems[activeIndex];
+  const ActiveIcon = activeItem.icon;
+
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-[9998] h-[76px] px-2 pb-[safe-area-inset-bottom] overflow-visible">
-      {/* Curved SVG Background */}
-      <NavBackground />
+      
+      {/* Dynamic Path-Morphing Background */}
+      <div className="absolute inset-0 -z-10 filter drop-shadow-[0_-8px_20px_rgba(0,0,0,0.06)]">
+        <svg
+          width="100%"
+          height="76"
+          viewBox="0 0 100 76"
+          preserveAspectRatio="none"
+          className="fill-white stroke-[#C5A059]/15"
+        >
+          <motion.path
+            d={getPath(activeIndex)}
+            animate={{ d: getPath(activeIndex) }}
+            transition={{ type: "spring", stiffness: 280, damping: 28 }}
+            strokeWidth="0.5"
+          />
+        </svg>
+      </div>
 
-      <div className="relative w-full h-full flex items-center justify-between px-3 overflow-visible">
+      <div className="relative w-full h-full flex items-center justify-between px-1 overflow-visible">
         
-        {/* Left Nav Group */}
-        <div className="w-[38%] flex justify-around items-center">
-          {leftNavItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-col items-center justify-center py-2 px-3 relative rounded-2xl transition-colors duration-300 ${
-                  item.isActive ? "text-[#FF6A00]" : "text-zinc-500 hover:text-zinc-800"
-                }`}
-              >
-                {/* Smooth Sliding Pill Background */}
-                {item.isActive && (
-                  <motion.div
-                    layoutId="activeTabPill"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-tr from-[#FF6A00]/5 to-[#C5A059]/10 -z-10 border border-[#C5A059]/10"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-
-                <motion.div
-                  animate={item.isActive ? "active" : "inactive"}
-                  variants={item.animate}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <Icon size={19} strokeWidth={item.isActive ? 2.25 : 1.75} />
-                </motion.div>
-                <span 
-                  className="text-[9px] font-semibold mt-1 tracking-wider uppercase" 
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                >
-                  {item.label}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Center Floating Cart Button */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-5.5 z-20 overflow-visible text-center">
-          <Link href="/cart" className="relative block">
+        {/* Floating Bubble containing Active Icon */}
+        <motion.div
+          className="absolute w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#FF6A00] shadow-[0_5px_15px_rgba(255,106,0,0.15)] z-20 border-[3px] border-white"
+          style={{
+            top: "0px",
+            y: "-15px",
+            x: "-50%",
+          }}
+          animate={{
+            left: `${(activeIndex + 0.5) * (100 / 6)}%`
+          }}
+          transition={{ type: "spring", stiffness: 280, damping: 28 }}
+        >
+          {/* Active icon crossfade inside floating bubble */}
+          <AnimatePresence mode="wait">
             <motion.div
-              className={`w-14 h-14 rounded-full bg-[#FF6A00] border-[5px] border-[#F8F5F0] flex items-center justify-center text-white shadow-lg shadow-[#FF6A00]/25`}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
-              animate={{
-                boxShadow: pathname === "/cart" 
-                  ? "0 10px 25px rgba(255,106,0,0.4)" 
-                  : ["0 4px 12px rgba(255,106,0,0.2)", "0 8px 20px rgba(255,106,0,0.35)", "0 4px 12px rgba(255,106,0,0.2)"]
-              }}
-              transition={{
-                boxShadow: {
-                  repeat: Infinity,
-                  duration: 3,
-                  ease: "easeInOut"
-                }
-              }}
+              key={activeIndex}
+              initial={{ scale: 0, rotate: -45, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              exit={{ scale: 0, rotate: 45, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <ShoppingBag size={20} strokeWidth={2.25} />
-              
-              {/* Cart Count Badge */}
-              {cartCount > 0 && (
-                <motion.span 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1.5 -right-1 bg-[#C5A059] text-white text-[9px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1 border border-[#FF6A00] shadow-sm"
-                >
-                  {cartCount}
-                </motion.span>
+              {activeItem.avatarLabel ? (
+                <div className="w-6 h-6 rounded-full bg-[#FF6A00]/10 text-[#FF6A00] text-[11px] font-bold flex items-center justify-center">
+                  {activeItem.avatarLabel}
+                </div>
+              ) : (
+                <ActiveIcon size={20} strokeWidth={2.5} />
               )}
             </motion.div>
-          </Link>
-          <span 
-            className="block text-[9px] font-bold tracking-wider uppercase text-[#FF6A00] mt-1"
-            style={{ fontFamily: "var(--font-poppins)" }}
-          >
-            Cart
-          </span>
-        </div>
+          </AnimatePresence>
 
-        {/* Right Nav Group */}
-        <div className="w-[42%] flex justify-around items-center">
-          {rightNavItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-col items-center justify-center py-2 px-3 relative rounded-2xl transition-colors duration-300 ${
-                  item.isActive ? "text-[#FF6A00]" : "text-zinc-500 hover:text-zinc-800"
-                }`}
-              >
-                {/* Smooth Sliding Pill Background */}
-                {item.isActive && (
-                  <motion.div
-                    layoutId="activeTabPill"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-tr from-[#FF6A00]/5 to-[#C5A059]/10 -z-10 border border-[#C5A059]/10"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
+          {/* Active Cart/Wishlist Badge on Floating Bubble */}
+          {activeItem.badge !== undefined && activeItem.badge > 0 && (
+            <motion.span 
+              layoutId="activeBubbleBadge"
+              className="absolute -top-1 -right-1 bg-[#C5A059] text-white text-[8px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1 border border-white shadow-sm"
+            >
+              {activeItem.badge}
+            </motion.span>
+          )}
+        </motion.div>
 
+        {/* Navigation Tabs Row */}
+        {navItems.map((item, idx) => {
+          const Icon = item.icon;
+          const isActive = idx === activeIndex;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex-1 flex flex-col items-center justify-end h-full pb-3 z-10 overflow-visible"
+            >
+              {/* Icon Container with pop-down animation when inactive */}
+              <div className="h-7 flex items-center justify-center overflow-visible relative">
                 <motion.div
-                  animate={item.isActive ? "active" : "inactive"}
-                  variants={item.animate}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative"
+                  animate={{
+                    scale: isActive ? 0 : 1,
+                    opacity: isActive ? 0 : 1,
+                    y: isActive ? -10 : 0
+                  }}
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 >
                   {item.avatarLabel ? (
-                    // Show user initial avatar if logged in
-                    <div className="w-5 h-5 rounded-full bg-[#FF6A00]/10 text-[#FF6A00] text-[10px] font-bold flex items-center justify-center border border-[#FF6A00]/20">
+                    <div className="w-5 h-5 rounded-full bg-zinc-100 text-zinc-600 text-[10px] font-bold flex items-center justify-center border border-zinc-200">
                       {item.avatarLabel}
                     </div>
                   ) : (
-                    <Icon size={19} strokeWidth={item.isActive ? 2.25 : 1.75} />
+                    <Icon size={19} className="text-zinc-500 hover:text-zinc-800" strokeWidth={1.75} />
                   )}
-                  
-                  {/* Item Badge */}
-                  {item.badge !== undefined && item.badge > 0 && (
-                    <span className="absolute -top-1.5 -right-2 bg-[#C5A059] text-white text-[8px] font-bold rounded-full h-3.5 min-w-[14px] flex items-center justify-center px-0.5 border border-white">
+
+                  {/* Badge for Inactive Tabs */}
+                  {!isActive && item.badge !== undefined && item.badge > 0 && (
+                    <span className="absolute -top-1 -right-2.5 bg-[#C5A059] text-white text-[8px] font-bold rounded-full h-3.5 min-w-[14px] flex items-center justify-center px-0.5 border border-white">
                       {item.badge}
                     </span>
                   )}
                 </motion.div>
-                <span 
-                  className="text-[9px] font-semibold mt-1 tracking-wider uppercase" 
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                >
-                  {item.label}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
+              </div>
+
+              {/* Label at the bottom */}
+              <motion.span
+                className="text-[9px] font-semibold tracking-wider uppercase mt-1 transition-colors duration-300"
+                style={{ fontFamily: "var(--font-poppins)" }}
+                animate={{
+                  color: isActive ? "#FF6A00" : "#71717a",
+                  scale: isActive ? 1.05 : 1,
+                  y: isActive ? 0 : 2
+                }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              >
+                {item.label}
+              </motion.span>
+            </Link>
+          );
+        })}
 
       </div>
     </div>
