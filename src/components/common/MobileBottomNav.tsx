@@ -116,6 +116,9 @@ export default function MobileBottomNav() {
   const activeItem = navItems[activeIndex];
   const ActiveIcon = activeItem.icon;
 
+  // Hide bottom nav on full-screen login and checkout pages
+  if (pathname?.startsWith("/login") || pathname?.startsWith("/checkout")) return null;
+
   return (
     <>
       {/* Pop-up Cards Panel (About Us & Contact Us) above the bottom nav */}

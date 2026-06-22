@@ -256,14 +256,16 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <button 
-                    type="submit" 
-                    className="place-order-btn" 
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Placing Your Order..." : "Place Order Masterpiece"}
-                    {!isSubmitting && <ArrowRight size={18} />}
-                  </button>
+                  <div className="mobile-sticky-btn-wrapper">
+                    <button 
+                      type="submit" 
+                      className="place-order-btn" 
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Placing Your Order..." : "Place Order Masterpiece"}
+                      {!isSubmitting && <ArrowRight size={18} />}
+                    </button>
+                  </div>
                 </form>
               </div>
 
