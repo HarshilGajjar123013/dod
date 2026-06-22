@@ -680,30 +680,19 @@ $brand-black: #1a1a1a;
   }
 }
 
-// ── Profile Menu Accordion ───────────────────────────────────────────────────
-.profile-menu-accordion {
+// ── Profile Menu Direct Links ────────────────────────────────────────────────
+.profile-menu-direct-links {
   display: flex;
   flex-direction: column;
   gap: 12px;
   text-align: left;
-}
 
-.profile-accordion-item {
-  border: 1px solid rgba($brand-black, 0.08);
-  border-radius: 12px;
-  background-color: #FAF9F6;
-  overflow: hidden;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: rgba($brand-orange, 0.3);
-  }
-
-  .accordion-header {
+  .btn-direct-link {
     width: 100%;
     padding: 16px 20px;
-    background: none;
-    border: none;
+    background-color: #FAF9F6;
+    border: 1px solid rgba($brand-black, 0.08);
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -711,59 +700,25 @@ $brand-black: #1a1a1a;
     font-size: 0.95rem;
     font-weight: 600;
     color: $brand-black;
-    cursor: pointer;
+    text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    cursor: pointer;
     transition: all 0.3s ease;
 
-    .arrow-icon {
+    svg {
       color: rgba($brand-black, 0.4);
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     &:hover {
+      border-color: rgba($brand-orange, 0.3);
       color: $brand-orange;
-      .arrow-icon {
+      background-color: rgba($brand-orange, 0.02);
+
+      svg {
         color: $brand-orange;
-      }
-    }
-
-    &.is-active {
-      color: $brand-orange;
-      border-bottom: 1px solid rgba($brand-black, 0.05);
-
-      .arrow-icon {
-        transform: rotate(90deg);
-        color: $brand-orange;
-      }
-    }
-  }
-
-  .accordion-content {
-    background-color: #ffffff;
-    overflow: hidden;
-  }
-
-  .accordion-links-list {
-    list-style: none;
-    padding: 10px 0;
-    margin: 0;
-
-    li {
-      a {
-        display: block;
-        padding: 10px 24px;
-        font-family: $font-body;
-        font-size: 0.85rem;
-        color: rgba($brand-black, 0.6);
-        text-decoration: none;
-        transition: all 0.2s ease;
-
-        &:hover {
-          color: $brand-orange;
-          background-color: rgba($brand-orange, 0.05);
-          padding-left: 28px;
-        }
+        transform: translateX(4px);
       }
     }
   }

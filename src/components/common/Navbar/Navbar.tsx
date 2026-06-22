@@ -317,95 +317,37 @@ const Navbar: React.FC = () => {
                       </div>
                       <div className="profile-dropdown__menu-items">
                         
-                        {/* Profile Section */}
+                        {/* Profile Link */}
                         <div className="dropdown-section">
-                          <button 
-                            type="button"
-                            className={`section-trigger ${activeDropdownSection === "profile" ? "is-active" : ""}`}
-                            onClick={() => setActiveDropdownSection(activeDropdownSection === "profile" ? null : "profile")}
+                          <Link 
+                            href="/profile"
+                            className="section-trigger"
+                            onClick={() => setIsProfileDropdownOpen(false)}
                           >
                             <span>Profile</span>
-                            <ChevronRight size={14} className="arrow-icon" />
-                          </button>
-                          <AnimatePresence initial={false}>
-                            {activeDropdownSection === "profile" && (
-                              <motion.div
-                                className="section-content"
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25 }}
-                              >
-                                <ul className="section-links">
-                                  <li><Link href="/profile" onClick={() => setIsProfileDropdownOpen(false)}>Personal Information</Link></li>
-                                  <li><Link href="/profile#edit" onClick={() => setIsProfileDropdownOpen(false)}>Edit Profile</Link></li>
-                                  <li><Link href="/profile#password" onClick={() => setIsProfileDropdownOpen(false)}>Change Password</Link></li>
-                                  <li><Link href="/profile#photo" onClick={() => setIsProfileDropdownOpen(false)}>Profile Photo</Link></li>
-                                </ul>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+                          </Link>
                         </div>
 
-                        {/* Order Section */}
+                        {/* Order Link */}
                         <div className="dropdown-section">
-                          <button 
-                            type="button"
-                            className={`section-trigger ${activeDropdownSection === "order" ? "is-active" : ""}`}
-                            onClick={() => setActiveDropdownSection(activeDropdownSection === "order" ? null : "order")}
+                          <Link 
+                            href="/order"
+                            className="section-trigger"
+                            onClick={() => setIsProfileDropdownOpen(false)}
                           >
                             <span>Order</span>
-                            <ChevronRight size={14} className="arrow-icon" />
-                          </button>
-                          <AnimatePresence initial={false}>
-                            {activeDropdownSection === "order" && (
-                              <motion.div
-                                className="section-content"
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25 }}
-                              >
-                                <ul className="section-links">
-                                  <li><Link href="/order" onClick={() => setIsProfileDropdownOpen(false)}>My Orders</Link></li>
-                                  <li><Link href="/order#details" onClick={() => setIsProfileDropdownOpen(false)}>Order Details</Link></li>
-                                  <li><Link href="/order#track" onClick={() => setIsProfileDropdownOpen(false)}>Track Order</Link></li>
-                                  <li><Link href="/order#cancel" onClick={() => setIsProfileDropdownOpen(false)}>Cancel Order</Link></li>
-                                  <li><Link href="/order#returns" onClick={() => setIsProfileDropdownOpen(false)}>Return / Refund Requests</Link></li>
-                                </ul>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+                          </Link>
                         </div>
 
-                        {/* Settings Section */}
+                        {/* Settings Link */}
                         <div className="dropdown-section">
-                          <button 
-                            type="button"
-                            className={`section-trigger ${activeDropdownSection === "settings" ? "is-active" : ""}`}
-                            onClick={() => setActiveDropdownSection(activeDropdownSection === "settings" ? null : "settings")}
+                          <Link 
+                            href="/settings"
+                            className="section-trigger"
+                            onClick={() => setIsProfileDropdownOpen(false)}
                           >
                             <span>Settings</span>
-                            <ChevronRight size={14} className="arrow-icon" />
-                          </button>
-                          <AnimatePresence initial={false}>
-                            {activeDropdownSection === "settings" && (
-                              <motion.div
-                                className="section-content"
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25 }}
-                              >
-                                <ul className="section-links">
-                                  <li><Link href="/settings" onClick={() => setIsProfileDropdownOpen(false)}>Privacy Settings</Link></li>
-                                  <li><Link href="/settings#policies" onClick={() => setIsProfileDropdownOpen(false)}>Returns & Refunds</Link></li>
-                                  <li><Link href="/settings#requests" onClick={() => setIsProfileDropdownOpen(false)}>Return Requests</Link></li>
-                                  <li><Link href="/settings#refunds" onClick={() => setIsProfileDropdownOpen(false)}>Refund Status</Link></li>
-                                </ul>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+                          </Link>
                         </div>
 
                         {/* Logout */}

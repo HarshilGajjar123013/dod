@@ -229,97 +229,19 @@ export default function LoginPage() {
                     </div>
                   </div>
 
-                  <div className="profile-menu-accordion" style={{ width: "100%", margin: "20px 0" }}>
-                    {/* PROFILE ACCORDION */}
-                    <div className="profile-accordion-item">
-                      <button
-                        type="button"
-                        className={`accordion-header ${activeProfileSection === "profile" ? "is-active" : ""}`}
-                        onClick={() => setActiveProfileSection(activeProfileSection === "profile" ? null : "profile")}
-                      >
-                        <span>Profile Settings</span>
-                        <ChevronRight className="arrow-icon" size={16} />
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {activeProfileSection === "profile" && (
-                          <motion.div
-                            className="accordion-content"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <ul className="accordion-links-list">
-                              <li><Link href="/profile">Personal Information</Link></li>
-                              <li><Link href="/profile#edit">Edit Profile</Link></li>
-                              <li><Link href="/profile#password">Change Password</Link></li>
-                              <li><Link href="/profile#photo">Profile Photo</Link></li>
-                            </ul>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    {/* ORDER ACCORDION */}
-                    <div className="profile-accordion-item">
-                      <button
-                        type="button"
-                        className={`accordion-header ${activeProfileSection === "order" ? "is-active" : ""}`}
-                        onClick={() => setActiveProfileSection(activeProfileSection === "order" ? null : "order")}
-                      >
-                        <span>My Orders</span>
-                        <ChevronRight className="arrow-icon" size={16} />
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {activeProfileSection === "order" && (
-                          <motion.div
-                            className="accordion-content"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <ul className="accordion-links-list">
-                              <li><Link href="/order">My Orders</Link></li>
-                              <li><Link href="/order#details">Order Details</Link></li>
-                              <li><Link href="/order#track">Track Order</Link></li>
-                              <li><Link href="/order#cancel">Cancel Order</Link></li>
-                              <li><Link href="/order#returns">Return / Refund Requests</Link></li>
-                            </ul>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    {/* SETTINGS ACCORDION */}
-                    <div className="profile-accordion-item">
-                      <button
-                        type="button"
-                        className={`accordion-header ${activeProfileSection === "settings" ? "is-active" : ""}`}
-                        onClick={() => setActiveProfileSection(activeProfileSection === "settings" ? null : "settings")}
-                      >
-                        <span>Preferences & Settings</span>
-                        <ChevronRight className="arrow-icon" size={16} />
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {activeProfileSection === "settings" && (
-                          <motion.div
-                            className="accordion-content"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <ul className="accordion-links-list">
-                              <li><Link href="/settings">Privacy Settings</Link></li>
-                              <li><Link href="/settings#policies">Returns & Refunds</Link></li>
-                              <li><Link href="/settings#requests">Return Requests</Link></li>
-                              <li><Link href="/settings#refunds">Refund Status</Link></li>
-                            </ul>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                  <div className="profile-menu-direct-links" style={{ width: "100%", margin: "20px 0", display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <Link href="/profile" className="btn-direct-link">
+                      <span>Profile</span>
+                      <ChevronRight size={16} />
+                    </Link>
+                    <Link href="/order" className="btn-direct-link">
+                      <span>Order</span>
+                      <ChevronRight size={16} />
+                    </Link>
+                    <Link href="/settings" className="btn-direct-link">
+                      <span>Settings</span>
+                      <ChevronRight size={16} />
+                    </Link>
                   </div>
 
                   <div className="profile-actions">
