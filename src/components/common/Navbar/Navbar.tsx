@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
@@ -94,6 +94,23 @@ const Navbar: React.FC = () => {
   const [activeTab, setActiveTab] = useState<keyof typeof megaMenuData>("Kurti");
   const [mounted, setMounted] = useState(false);
 
+  // Profile dropdown states
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [activeDropdownSection, setActiveDropdownSection] = useState<string | null>(null);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // Search overlay states
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [navSearchQuery, setNavSearchQuery] = useState("");
@@ -115,6 +132,7 @@ const Navbar: React.FC = () => {
   const cart = useStore((state) => state.cart);
   const wishlist = useStore((state) => state.wishlist);
   const user = useStore((state) => state.user);
+  const logoutAction = useStore((state) => state.logout);
 
   useEffect(() => {
     setMounted(true);
@@ -270,10 +288,151 @@ const Navbar: React.FC = () => {
               <Heart size={22} />
               {wishlistCount > 0 && <span className="navbar-actions__count">{wishlistCount}</span>}
             </Link>
-            <Link href="/login" className="navbar-actions__btn desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <User size={22} />
-              {userLoggedIn && <span style={{ fontSize: '11px', fontFamily: 'var(--font-poppins)', fontWeight: 600, color: 'var(--color-primary)' }}>{user?.name.split(" ")[0]}</span>}
-            </Link>
+            {userLoggedIn ? (
+              <div className="navbar-profile-container desktop-only" ref={profileDropdownRef} style={{ position: "relative" }}>
+                <button
+                  type="button"
+                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                  className="navbar-actions__btn"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#FF6A00' }}
+                  aria-expanded={isProfileDropdownOpen}
+                >
+                  <User size={22} style={{ stroke: '#FF6A00' }} />
+                  <span style={{ fontSize: '11px', fontFamily: 'var(--font-poppins)', fontWeight: 600, color: '#FF6A00' }}>
+                    {user?.name}
+                  </span>
+                </button>
+
+                <AnimatePresence>
+                  {isProfileDropdownOpen && (
+                    <motion.div
+                      className="profile-dropdown"
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <div className="profile-dropdown__header">
+                        <span className="user-email">{user?.email}</span>
+                      </div>
+                      <div className="profile-dropdown__menu-items">
+                        
+                        {/* Profile Section */}
+                        <div className="dropdown-section">
+                          <button 
+                            type="button"
+                            className={`section-trigger ${activeDropdownSection === "profile" ? "is-active" : ""}`}
+                            onClick={() => setActiveDropdownSection(activeDropdownSection === "profile" ? null : "profile")}
+                          >
+                            <span>Profile</span>
+                            <ChevronRight size={14} className="arrow-icon" />
+                          </button>
+                          <AnimatePresence initial={false}>
+                            {activeDropdownSection === "profile" && (
+                              <motion.div
+                                className="section-content"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.25 }}
+                              >
+                                <ul className="section-links">
+                                  <li><Link href="/profile" onClick={() => setIsProfileDropdownOpen(false)}>Personal Information</Link></li>
+                                  <li><Link href="/profile#edit" onClick={() => setIsProfileDropdownOpen(false)}>Edit Profile</Link></li>
+                                  <li><Link href="/profile#password" onClick={() => setIsProfileDropdownOpen(false)}>Change Password</Link></li>
+                                  <li><Link href="/profile#photo" onClick={() => setIsProfileDropdownOpen(false)}>Profile Photo</Link></li>
+                                </ul>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
+                        {/* Order Section */}
+                        <div className="dropdown-section">
+                          <button 
+                            type="button"
+                            className={`section-trigger ${activeDropdownSection === "order" ? "is-active" : ""}`}
+                            onClick={() => setActiveDropdownSection(activeDropdownSection === "order" ? null : "order")}
+                          >
+                            <span>Order</span>
+                            <ChevronRight size={14} className="arrow-icon" />
+                          </button>
+                          <AnimatePresence initial={false}>
+                            {activeDropdownSection === "order" && (
+                              <motion.div
+                                className="section-content"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.25 }}
+                              >
+                                <ul className="section-links">
+                                  <li><Link href="/order" onClick={() => setIsProfileDropdownOpen(false)}>My Orders</Link></li>
+                                  <li><Link href="/order#details" onClick={() => setIsProfileDropdownOpen(false)}>Order Details</Link></li>
+                                  <li><Link href="/order#track" onClick={() => setIsProfileDropdownOpen(false)}>Track Order</Link></li>
+                                  <li><Link href="/order#cancel" onClick={() => setIsProfileDropdownOpen(false)}>Cancel Order</Link></li>
+                                  <li><Link href="/order#returns" onClick={() => setIsProfileDropdownOpen(false)}>Return / Refund Requests</Link></li>
+                                </ul>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
+                        {/* Settings Section */}
+                        <div className="dropdown-section">
+                          <button 
+                            type="button"
+                            className={`section-trigger ${activeDropdownSection === "settings" ? "is-active" : ""}`}
+                            onClick={() => setActiveDropdownSection(activeDropdownSection === "settings" ? null : "settings")}
+                          >
+                            <span>Settings</span>
+                            <ChevronRight size={14} className="arrow-icon" />
+                          </button>
+                          <AnimatePresence initial={false}>
+                            {activeDropdownSection === "settings" && (
+                              <motion.div
+                                className="section-content"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.25 }}
+                              >
+                                <ul className="section-links">
+                                  <li><Link href="/settings" onClick={() => setIsProfileDropdownOpen(false)}>Privacy Settings</Link></li>
+                                  <li><Link href="/settings#policies" onClick={() => setIsProfileDropdownOpen(false)}>Returns & Refunds</Link></li>
+                                  <li><Link href="/settings#requests" onClick={() => setIsProfileDropdownOpen(false)}>Return Requests</Link></li>
+                                  <li><Link href="/settings#refunds" onClick={() => setIsProfileDropdownOpen(false)}>Refund Status</Link></li>
+                                </ul>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
+                        {/* Logout */}
+                        <div className="dropdown-section dropdown-section--logout">
+                          <button 
+                            type="button"
+                            className="section-trigger"
+                            onClick={() => {
+                              setIsProfileDropdownOpen(false);
+                              logoutAction();
+                              router.push("/login");
+                            }}
+                          >
+                            <span>Logout</span>
+                          </button>
+                        </div>
+
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <Link href="/login" className="navbar-actions__btn desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <User size={22} />
+              </Link>
+            )}
           </div>
         </div>
       </div>
