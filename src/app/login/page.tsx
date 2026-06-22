@@ -169,6 +169,23 @@ export default function LoginPage() {
     <main className="auth-page-wrapper">
       {/* LEFT COLUMN: Form panel */}
       <div className="auth-left-panel">
+        
+        {/* Mobile Top Header Decoration */}
+        <div className="auth-mobile-header">
+          <div className="auth-mobile-header__content">
+            <img src="/logo.png" alt="Designs of Dreams" className="mobile-header-logo" />
+            <span className="mobile-header-text">DESIGNS OF DREAMS</span>
+          </div>
+          <div className="mobile-header-wave-wrapper">
+            <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path 
+                d="M0 32L60 42.7C120 53 240 75 360 80C480 85 600 75 720 64C840 53 960 43 1080 42.7C1200 43 1320 53 1380 58.7L1440 64V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V32Z" 
+                fill="#ffffff"
+              />
+            </svg>
+          </div>
+        </div>
+
         <div className="auth-form-container">
           
           {/* Logo & Brand Header */}
@@ -512,6 +529,17 @@ export default function LoginPage() {
             </AnimatePresence>
           </div>
         </div>
+        
+        {/* Mobile Bottom Wave Decoration */}
+        <div className="auth-mobile-bottom-wave">
+          <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path 
+              d="M0 64L48 69.3C96 75 192 85 288 80C384 75 480 53 576 48C672 43 768 53 864 64C960 75 1056 85 1152 80C1248 75 1344 53 1392 42.7L1440 32V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V64Z" 
+              fill="#FF6A00"
+            />
+          </svg>
+        </div>
+
       </div>
 
       {/* RIGHT COLUMN: 3x4 Grid Collage */}
