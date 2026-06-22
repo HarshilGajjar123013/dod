@@ -32,17 +32,6 @@ const taglines = [
   "New Festive Collection Out Now!"
 ];
 
-const mobileNavLinks = (cartCount: number, wishlistCount: number, userLoggedIn: boolean) => [
-  { name: "Home", href: "/", icon: <Home size={20} /> },
-  { name: "About Us", href: "/about", icon: <Info size={20} /> },
-  { name: "Collection", href: "/collection", icon: <Layers size={20} />, hasDrillDown: true },
-  { name: "Contact Us", href: "/contact", icon: <PhoneCall size={20} /> },
-  { name: "Search", href: "#", icon: <Search size={20} /> },
-  { name: "Cart", href: "/cart", icon: <ShoppingBag size={20} />, count: cartCount },
-  { name: "Wishlist", href: "/wishlist", icon: <Heart size={20} />, count: wishlistCount },
-  { name: userLoggedIn ? "My Account" : "Login / Register", href: "/login", icon: <User size={20} /> },
-];
-
 const megaMenuData: any = {
   Kurti: {
     title: "Kurti",
@@ -101,7 +90,6 @@ const Navbar: React.FC = () => {
   const isHome = pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaOpen, setIsMegaOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<keyof typeof megaMenuData>("Kurti");
   const [mounted, setMounted] = useState(false);
@@ -128,10 +116,6 @@ const Navbar: React.FC = () => {
   const wishlist = useStore((state) => state.wishlist);
   const user = useStore((state) => state.user);
 
-  // Drill-down State: ['main', 'Collection', 'Kurti', 'Kurti Categories']
-  const [viewStack, setViewStack] = useState<any[]>(['main']);
-  const currentView = viewStack[viewStack.length - 1];
-
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -141,10 +125,6 @@ const Navbar: React.FC = () => {
   }, []);
 
   if (pathname === "/login") return null;
-
-  const pushView = (view: any) => setViewStack([...viewStack, view]);
-  const popView = () => setViewStack(viewStack.slice(0, -1));
-  const closeMenu = () => { setIsMobileMenuOpen(false); setViewStack(['main']); };
 
   const shouldBeSolid = !isHome || isScrolled;
 
@@ -274,8 +254,9 @@ const Navbar: React.FC = () => {
 
           {/* Icons & Hamburger */}
           <div className="navbar-actions">
+            {/* Search Icon Button: Now visible on both mobile and desktop */}
             <button
-              className="navbar-actions__btn desktop-only"
+              className="navbar-actions__btn"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Open Search"
             >
@@ -293,148 +274,9 @@ const Navbar: React.FC = () => {
               <User size={22} />
               {userLoggedIn && <span style={{ fontSize: '11px', fontFamily: 'var(--font-poppins)', fontWeight: 600, color: 'var(--color-primary)' }}>{user?.name.split(" ")[0]}</span>}
             </Link>
-            <button className="navbar-actions__btn mobile-hamburger" onClick={() => setIsMobileMenuOpen(true)}>
-              <Menu size={28} />
-            </button>
           </div>
         </div>
       </div>
-
-      {/* ── MOBILE DRILL-DOWN DRAWER ────────────────────────────────────────── */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div className="mobile-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeMenu} />
-            <motion.div className="mobile-drawer" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
-
-              {/* HEADER (DYNAMIC) */}
-              <div className={`mobile-drawer__header ${currentView === 'main' ? 'is-black' : ''}`}>
-                {currentView !== 'main' && (
-                  <button className="mobile-drawer__back" onClick={popView}><ChevronLeft size={24} /></button>
-                )}
-
-                {currentView === 'main' ? (
-                  <div className="mobile-drawer__brand">
-                    <img src="/logo.png" alt="Logo" className="mobile-drawer__logo" />
-                    <div className="mobile-drawer__brand-text">
-                      <span className="title">DESIGNS OF DREAMS</span>
-                      <p>Grace in Every Drape</p>
-                    </div>
-                  </div>
-                ) : (
-                  <span className="mobile-drawer__title">{typeof currentView === 'string' ? currentView : currentView.title}</span>
-                )}
-
-                <button className="mobile-drawer__close" onClick={closeMenu}><X size={24} /></button>
-              </div>
-
-              {/* CONTENT AREA */}
-              <div className="mobile-drawer__content">
-                <AnimatePresence mode="popLayout">
-                  {currentView === 'main' && (
-                    <motion.div key="main" initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="mobile-view">
-                      <ul className="mobile-list">
-                        {mobileNavLinks(cartCount, wishlistCount, userLoggedIn).map((link) => (
-                          <li key={link.name}>
-                            <Link
-                              href={link.href}
-                              className="mobile-list__item"
-                              onClick={(e) => {
-                                if (link.hasDrillDown) {
-                                  e.preventDefault();
-                                  pushView('Collection');
-                                } else if (link.name === "Search") {
-                                  e.preventDefault();
-                                  closeMenu();
-                                  setIsSearchOpen(true);
-                                } else {
-                                  closeMenu();
-                                }
-                              }}
-                            >
-                              <div className="item-left">
-                                <span className="item-icon">{link.icon}</span>
-                                <span className="item-text">{link.name}</span>
-                              </div>
-                              {link.hasDrillDown && <ChevronRight size={18} className="item-arrow" />}
-                              {link.count !== undefined && link.count > 0 && <span className="item-badge">{link.count}</span>}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="mobile-drawer__promo">
-                        <div className="promo-box">
-                          <Gift className="promo-icon" />
-                          <div className="promo-text">
-                            <p>Get 10% OFF on your first order!</p>
-                            <span>Use Code: <strong>SAREESTYLE10</strong></span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {currentView === 'Collection' && (
-                    <motion.div key="collection" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 20, opacity: 0 }} className="mobile-view">
-                      <ul className="mobile-category-list">
-                        {Object.keys(megaMenuData).map((key) => (
-                          <li key={key}>
-                            <button className="category-card" onClick={() => { setActiveTab(key as any); pushView(megaMenuData[key]); }}>
-                              <div className="category-img"><img src={`https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=100&q=80`} alt={key} /></div>
-                              <div className="category-info">
-                                <h3>{megaMenuData[key].title}</h3>
-                                <p>{megaMenuData[key].description}</p>
-                              </div>
-                              <ChevronRight size={18} />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-
-                  {/* Category View (e.g. Kurti) */}
-                  {typeof currentView === 'object' && currentView.sections && !currentView.links && (
-                    <motion.div key="category" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 20, opacity: 0 }} className="mobile-view">
-                      <ul className="mobile-sub-list">
-                        {currentView.sections.map((section: any) => (
-                          <li key={section.id}>
-                            <button className="mobile-list__item" onClick={() => pushView(section)}>
-                              <div className="item-left">
-                                <div className="item-circle-icon"><Layers size={18} /></div>
-                                <span className="item-text">{section.title}</span>
-                              </div>
-                              <ChevronRight size={18} className="item-arrow" />
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-
-                  {/* Section View (e.g. Kurti Categories) */}
-                  {typeof currentView === 'object' && currentView.links && (
-                    <motion.div key="section" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 20, opacity: 0 }} className="mobile-view">
-                      <ul className="mobile-drill-list">
-                        {currentView.links.map((link: string) => (
-                          <li key={link}>
-                            <Link href={`/collection?category=${activeTab as string}&sub=${encodeURIComponent(link)}`} className="mobile-drill-item" onClick={closeMenu}>
-                              {link} <ChevronRight size={16} />
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                      <Link href={`/collection?category=${activeTab as string}`} className="view-all-mobile" onClick={closeMenu}>
-                        {currentView.viewAll} <ChevronRight size={14} />
-                      </Link>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       {/* ── SEARCH OVERLAY ─────────────────────────────────────────────────── */}
       <AnimatePresence>
