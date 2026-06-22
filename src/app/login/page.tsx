@@ -8,20 +8,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { 
-  LogIn, 
-  UserPlus, 
-  LogOut, 
   CheckCircle, 
   AlertCircle, 
   Sparkles, 
   Mail, 
   Lock, 
   User, 
-  ArrowLeft, 
   Home,
-  Phone
+  Phone,
+  Eye,
+  EyeOff,
+  LogOut
 } from "lucide-react";
-import { FaGoogle, FaApple, FaFacebookF } from "react-icons/fa";
+import { FaGoogle, FaApple } from "react-icons/fa";
 import "./Login.scss";
 
 // Validation schemas using Zod
@@ -46,54 +45,39 @@ const signupSchema = z.object({
   path: ["confirmPassword"],
 });
 
+// Collage grid images representing Designs of Dreams collection
+const collageImages = [
+  "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1610030470298-4058fbb6190c?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1609357518652-6cf0416f0cbe?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&w=400&q=80"
+];
+
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const [mounted, setMounted] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const user = useStore((state) => state.user);
   const loginAction = useStore((state) => state.login);
   const signupAction = useStore((state) => state.signup);
   const logoutAction = useStore((state) => state.logout);
 
-  const slides = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1200&q=80",
-      title: "Varanasi Handlooms",
-      subtitle: "Woven in Peeli Kothi",
-      description: "Every garment is hand-woven by master craftsmen, carrying forward an unbroken heritage of Indian silk artistry since Peeli Kothi."
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1200&q=80",
-      title: "100% Pure Silk",
-      subtitle: "Atelier Silk Certification",
-      description: "We work exclusively with certified pure mulberry silks, organic cottons, and authentic hand-finished zardozi embroidery."
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=1200&q=80",
-      title: "Designs of Dreams",
-      subtitle: "Timeless Masterpieces",
-      description: "Bridging the gap between ancient handloom cultures and contemporary, high-fashion silhouettes."
-    }
-  ];
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(slideInterval);
-  }, [mounted]);
 
   // React Hook Form for Login
   const {
@@ -110,10 +94,33 @@ export default function LoginPage() {
     register: registerSignup,
     handleSubmit: handleSignupSubmit,
     formState: { errors: signupErrors },
-    reset: resetSignupForm
+    reset: resetSignupForm,
+    watch: watchSignup
   } = useForm({
     resolver: zodResolver(signupSchema)
   });
+
+  const signupPassword = watchSignup ? watchSignup("password") || "" : "";
+
+  // Password strength logic
+  const getPasswordStrength = (pwd: string) => {
+    if (!pwd) return 0;
+    let score = 0;
+    if (pwd.length >= 6) score += 1;
+    if (pwd.length >= 8) score += 1;
+    if (/[A-Z]/.test(pwd)) score += 1;
+    if (/[0-9]/.test(pwd) || /[^A-Za-z0-9]/.test(pwd)) score += 1;
+    return score;
+  };
+
+  const pwdStrength = getPasswordStrength(signupPassword);
+
+  const getStrengthClass = (score: number) => {
+    if (score === 1) return "weak";
+    if (score === 2 || score === 3) return "medium";
+    if (score === 4) return "strong";
+    return "";
+  };
 
   const onLogin = (data: any) => {
     setErrorMsg("");
@@ -159,94 +166,37 @@ export default function LoginPage() {
   if (!mounted) return null;
 
   return (
-    <main className="split-auth-page">
-      {/* FULL-PAGE STORYTELLING SLIDER */}
-      <div className="split-auth-bg-slider">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
-            className="split-auth-bg-slide"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2 }}
-            style={{ backgroundImage: `url(${slides[currentSlide].image})` }}
-          >
-            <div className="split-auth-bg-overlay" />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* TOP BRANDING HEADER */}
-      <header className="split-auth-header">
-        <Link href="/" className="split-auth-logo">
-          <img src="/logo.png" alt="Designs of Dreams" className="split-auth-logo__img" />
-          <span className="split-auth-logo__text">DESIGNS OF DREAMS</span>
-        </Link>
-      </header>
-
-      {/* FOREGROUND LAYOUT */}
-      <div className="split-auth-container">
-        {/* LEFT COLUMN: Narrative Text Overlay */}
-        <div className="split-auth-story">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.6 }}
-              className="split-auth-story__content"
-            >
-              <span className="split-auth-story__tag">{slides[currentSlide].subtitle}</span>
-              <h2 className="split-auth-story__title">{slides[currentSlide].title}</h2>
-              <p className="split-auth-story__desc">{slides[currentSlide].description}</p>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Dots indicator */}
-          <div className="split-auth-dots">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`carousel-dot ${currentSlide === idx ? "is-active" : ""}`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN: Centered Card */}
-        <div className="split-auth-form-panel">
-          {/* Decorative Background Pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-            style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='38' fill='none' stroke='%23000000' stroke-width='0.5'/%3E%3C/svg%3E\")" }} 
-          />
+    <main className="auth-page-wrapper">
+      {/* LEFT COLUMN: Form panel */}
+      <div className="auth-left-panel">
+        <div className="auth-form-container">
           
-          <div className="login-container">
+          {/* Logo & Brand Header */}
+          <div className="auth-brand">
+            <Link href="/" className="auth-brand-link">
+              <img src="/logo.png" alt="Designs of Dreams" className="auth-brand-logo" />
+              <span className="auth-brand-text">DESIGNS OF DREAMS</span>
+            </Link>
+          </div>
+
+          <div className="auth-form-card">
             <AnimatePresence mode="wait">
               {user?.isLoggedIn ? (
                 // LOGGED IN VIEW
                 <motion.div 
                   key="logged-in"
-                  className="auth-box auth-box--profile"
+                  className="profile-panel text-center"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="auth-box__header text-center">
-                    <span className="auth-box__tag">
+                  <div className="profile-details text-center">
+                    <span className="profile-tag">
                       <Sparkles size={12} />
                       Atelier Account
                     </span>
                     <h3>Atelier Profile</h3>
-                    <div className="profile-divider" />
-                  </div>
-
-                  <div className="profile-details text-center">
                     <div className="profile-avatar">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
@@ -258,60 +208,60 @@ export default function LoginPage() {
                     </div>
                   </div>
 
-                  <div className="auth-profile-actions" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <Link href="/" className="auth-btn auth-btn--home">
+                  <div className="profile-actions">
+                    <Link href="/" className="btn-action btn-action--primary">
                       <Home size={16} />
                       Go to Homepage
                     </Link>
-                    <button className="auth-btn auth-btn--logout" onClick={handleLogout}>
+                    <button className="btn-action btn-action--secondary" onClick={handleLogout}>
                       <LogOut size={16} />
                       Logout Session
                     </button>
                   </div>
                 </motion.div>
               ) : (
-                // AUTHENTICATION FORMS VIEW
-                <motion.div 
+                // AUTHENTICATION FORMS (LOGIN / SIGNUP)
+                <motion.div
                   key="auth-forms"
-                  className="auth-box"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="auth-flow-panel"
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {/* Tab Toggles */}
-                  <div className="auth-tabs">
-                    <button 
-                      className={`auth-tabs__btn ${activeTab === "login" ? "is-active" : ""}`}
-                      onClick={() => { setActiveTab("login"); setErrorMsg(""); }}
-                    >
-                      <LogIn size={16} />
-                      Sign In
-                    </button>
-                    <button 
-                      className={`auth-tabs__btn ${activeTab === "signup" ? "is-active" : ""}`}
-                      onClick={() => { setActiveTab("signup"); setErrorMsg(""); }}
-                    >
-                      <UserPlus size={16} />
-                      Sign Up
-                    </button>
-                    <span 
-                      className="auth-tabs__bar" 
-                      style={{ transform: activeTab === "signup" ? "translateX(100%)" : "translateX(0)" }}
-                    />
+                  {/* Heading & Subtitle toggle */}
+                  <div className="auth-header">
+                    <h2>{activeTab === "login" ? "Welcome Back!" : "Good Morning!"}</h2>
+                    <p className="auth-subtitle">
+                      {activeTab === "login" ? (
+                        <>
+                          Don't have an account?{" "}
+                          <button type="button" onClick={() => { setActiveTab("signup"); setErrorMsg(""); }} className="toggle-tab-link">
+                            Sign Up
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          Already have an account?{" "}
+                          <button type="button" onClick={() => { setActiveTab("login"); setErrorMsg(""); }} className="toggle-tab-link">
+                            Sign In
+                          </button>
+                        </>
+                      )}
+                    </p>
                   </div>
 
-                  {/* Status Notifications */}
+                  {/* Status Alerts */}
                   {successMsg && (
-                    <div className="auth-alert auth-alert--success">
-                      <CheckCircle size={18} />
+                    <div className="auth-notification success">
+                      <CheckCircle size={16} />
                       <span>{successMsg}</span>
                     </div>
                   )}
 
                   {errorMsg && (
-                    <div className="auth-alert auth-alert--error">
-                      <AlertCircle size={18} />
+                    <div className="auth-notification error">
+                      <AlertCircle size={16} />
                       <span>{errorMsg}</span>
                     </div>
                   )}
@@ -322,74 +272,80 @@ export default function LoginPage() {
                       <motion.form 
                         key="login-form"
                         onSubmit={handleLoginSubmit(onLogin)}
-                        className="auth-form"
+                        className="auth-inputs-form"
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 10 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <div className="auth-form__group">
-                          <Mail className="auth-form__icon" size={16} />
-                          <input 
-                            type="email" 
-                            placeholder="Email Address"
-                            className={`auth-form__input ${loginErrors.email ? "is-invalid" : ""}`}
-                            {...registerLogin("email")}
-                          />
-                          <span className="auth-form__line" />
-                          {loginErrors.email && <span className="auth-form__error-text">{(loginErrors.email.message as string)}</span>}
+                        <div className="input-group">
+                          <label>Email</label>
+                          <div className="input-wrapper">
+                            <Mail className="input-icon" size={18} />
+                            <input 
+                              type="email" 
+                              placeholder="Type your email address"
+                              className={loginErrors.email ? "is-invalid" : ""}
+                              {...registerLogin("email")}
+                            />
+                          </div>
+                          {loginErrors.email && <span className="error-text">{(loginErrors.email.message as string)}</span>}
                         </div>
 
-                        <div className="auth-form__group">
-                          <Lock className="auth-form__icon" size={16} />
-                          <input 
-                            type="password" 
-                            placeholder="Password"
-                            className={`auth-form__input ${loginErrors.password ? "is-invalid" : ""}`}
-                            {...registerLogin("password")}
-                          />
-                          <span className="auth-form__line" />
-                          {loginErrors.password && <span className="auth-form__error-text">{(loginErrors.password.message as string)}</span>}
+                        <div className="input-group">
+                          <label>Password</label>
+                          <div className="input-wrapper">
+                            <Lock className="input-icon" size={18} />
+                            <input 
+                              type={showPassword ? "text" : "password"} 
+                              placeholder="Type your password"
+                              className={loginErrors.password ? "is-invalid" : ""}
+                              {...registerLogin("password")}
+                            />
+                            <button 
+                              type="button" 
+                              className="visibility-toggle"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                          </div>
+                          {loginErrors.password && <span className="error-text">{(loginErrors.password.message as string)}</span>}
                         </div>
 
-                        <div className="auth-form__helper">
-                          <label className="auth-form__checkbox-label">
+                        <div className="helper-row">
+                          <label className="checkbox-label">
                             <input 
                               type="checkbox" 
-                              className="auth-form__checkbox"
                               {...registerLogin("rememberMe")}
                             />
                             <span>Remember Me</span>
                           </label>
                           <a 
                             href="#" 
-                            className="auth-forgot-link" 
+                            className="forgot-link" 
                             onClick={(e) => { e.preventDefault(); alert("Password reset instructions have been sent to your email!"); }}
                           >
                             Forgot Password?
                           </a>
                         </div>
 
-                        <button type="submit" className="auth-btn">
+                        <button type="submit" className="submit-auth-btn">
                           Sign In
                         </button>
 
-                        <div className="auth-social-separator">
+                        <div className="divider-row">
                           <span>Or continue with</span>
                         </div>
 
-                        <div className="auth-social-group">
-                          <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin("Google")} aria-label="Continue with Google">
+                        <div className="social-login-group">
+                          <button type="button" className="social-btn" onClick={() => handleSocialLogin("Google")} aria-label="Continue with Google">
                             <FaGoogle />
-                            <span>Google</span>
+                            <span>Continue with Google</span>
                           </button>
-                          <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin("Apple")} aria-label="Continue with Apple">
+                          <button type="button" className="social-btn" onClick={() => handleSocialLogin("Apple")} aria-label="Continue with Apple">
                             <FaApple />
-                            <span>Apple</span>
-                          </button>
-                          <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin("Facebook")} aria-label="Continue with Facebook">
-                            <FaFacebookF />
-                            <span>Facebook</span>
+                            <span>Continue with Apple</span>
                           </button>
                         </div>
                       </motion.form>
@@ -398,134 +354,174 @@ export default function LoginPage() {
                       <motion.form 
                         key="signup-form"
                         onSubmit={handleSignupSubmit(onSignup)}
-                        className="auth-form"
+                        className="auth-inputs-form"
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -10 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <div className="auth-form__row">
-                          <div className="auth-form__group">
-                            <User className="auth-form__icon" size={16} />
-                            <input 
-                              type="text" 
-                              placeholder="First Name"
-                              className={`auth-form__input ${signupErrors.firstName ? "is-invalid" : ""}`}
-                              {...registerSignup("firstName")}
-                            />
-                            <span className="auth-form__line" />
-                            {signupErrors.firstName && <span className="auth-form__error-text">{(signupErrors.firstName.message as string)}</span>}
+                        <div className="name-row">
+                          <div className="input-group">
+                            <label>First Name</label>
+                            <div className="input-wrapper">
+                              <User className="input-icon" size={18} />
+                              <input 
+                                type="text" 
+                                placeholder="First Name"
+                                className={signupErrors.firstName ? "is-invalid" : ""}
+                                {...registerSignup("firstName")}
+                              />
+                            </div>
+                            {signupErrors.firstName && <span className="error-text">{(signupErrors.firstName.message as string)}</span>}
                           </div>
 
-                          <div className="auth-form__group">
-                            <User className="auth-form__icon" size={16} />
-                            <input 
-                              type="text" 
-                              placeholder="Last Name"
-                              className={`auth-form__input ${signupErrors.lastName ? "is-invalid" : ""}`}
-                              {...registerSignup("lastName")}
-                            />
-                            <span className="auth-form__line" />
-                            {signupErrors.lastName && <span className="auth-form__error-text">{(signupErrors.lastName.message as string)}</span>}
+                          <div className="input-group">
+                            <label>Last Name</label>
+                            <div className="input-wrapper">
+                              <User className="input-icon" size={18} />
+                              <input 
+                                type="text" 
+                                placeholder="Last Name"
+                                className={signupErrors.lastName ? "is-invalid" : ""}
+                                {...registerSignup("lastName")}
+                              />
+                            </div>
+                            {signupErrors.lastName && <span className="error-text">{(signupErrors.lastName.message as string)}</span>}
                           </div>
                         </div>
 
-                        <div className="auth-form__group">
-                          <Mail className="auth-form__icon" size={16} />
-                          <input 
-                            type="email" 
-                            placeholder="Email Address"
-                            className={`auth-form__input ${signupErrors.email ? "is-invalid" : ""}`}
-                            {...registerSignup("email")}
-                          />
-                          <span className="auth-form__line" />
-                          {signupErrors.email && <span className="auth-form__error-text">{(signupErrors.email.message as string)}</span>}
+                        <div className="input-group">
+                          <label>Email</label>
+                          <div className="input-wrapper">
+                            <Mail className="input-icon" size={18} />
+                            <input 
+                              type="email" 
+                              placeholder="Type your email address"
+                              className={signupErrors.email ? "is-invalid" : ""}
+                              {...registerSignup("email")}
+                            />
+                          </div>
+                          {signupErrors.email && <span className="error-text">{(signupErrors.email.message as string)}</span>}
                         </div>
 
-                        <div className="auth-form__group">
-                          <Phone className="auth-form__icon" size={16} />
-                          <input 
-                            type="tel" 
-                            placeholder="Mobile Number"
-                            className={`auth-form__input ${signupErrors.mobileNumber ? "is-invalid" : ""}`}
-                            {...registerSignup("mobileNumber")}
-                          />
-                          <span className="auth-form__line" />
-                          {signupErrors.mobileNumber && <span className="auth-form__error-text">{(signupErrors.mobileNumber.message as string)}</span>}
+                        <div className="input-group">
+                          <label>Mobile Number</label>
+                          <div className="input-wrapper">
+                            <Phone className="input-icon" size={18} />
+                            <input 
+                              type="tel" 
+                              placeholder="Type your mobile number"
+                              className={signupErrors.mobileNumber ? "is-invalid" : ""}
+                              {...registerSignup("mobileNumber")}
+                            />
+                          </div>
+                          {signupErrors.mobileNumber && <span className="error-text">{(signupErrors.mobileNumber.message as string)}</span>}
                         </div>
 
-                        <div className="auth-form__group">
-                          <Lock className="auth-form__icon" size={16} />
-                          <input 
-                            type="password" 
-                            placeholder="Password"
-                            className={`auth-form__input ${signupErrors.password ? "is-invalid" : ""}`}
-                            {...registerSignup("password")}
-                          />
-                          <span className="auth-form__line" />
-                          {signupErrors.password && <span className="auth-form__error-text">{(signupErrors.password.message as string)}</span>}
+                        <div className="input-group">
+                          <label>Password</label>
+                          <div className="input-wrapper">
+                            <Lock className="input-icon" size={18} />
+                            <input 
+                              type={showPassword ? "text" : "password"} 
+                              placeholder="Type your password"
+                              className={signupErrors.password ? "is-invalid" : ""}
+                              {...registerSignup("password")}
+                            />
+                            <button 
+                              type="button" 
+                              className="visibility-toggle"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                          </div>
+
+                          {/* Segmented strength indicator */}
+                          <div className="password-strength-indicator">
+                            {[1, 2, 3, 4].map((seg) => (
+                              <span 
+                                key={seg} 
+                                className={`strength-segment ${pwdStrength >= seg ? getStrengthClass(pwdStrength) : ""}`}
+                              />
+                            ))}
+                          </div>
+
+                          {signupErrors.password && <span className="error-text">{(signupErrors.password.message as string)}</span>}
                         </div>
 
-                        <div className="auth-form__group">
-                          <Lock className="auth-form__icon" size={16} />
-                          <input 
-                            type="password" 
-                            placeholder="Confirm Password"
-                            className={`auth-form__input ${signupErrors.confirmPassword ? "is-invalid" : ""}`}
-                            {...registerSignup("confirmPassword")}
-                          />
-                          <span className="auth-form__line" />
-                          {signupErrors.confirmPassword && <span className="auth-form__error-text">{(signupErrors.confirmPassword.message as string)}</span>}
+                        <div className="input-group">
+                          <label>Confirm Password</label>
+                          <div className="input-wrapper">
+                            <Lock className="input-icon" size={18} />
+                            <input 
+                              type={showConfirmPassword ? "text" : "password"} 
+                              placeholder="Confirm your password"
+                              className={signupErrors.confirmPassword ? "is-invalid" : ""}
+                              {...registerSignup("confirmPassword")}
+                            />
+                            <button 
+                              type="button" 
+                              className="visibility-toggle"
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                          </div>
+                          {signupErrors.confirmPassword && <span className="error-text">{(signupErrors.confirmPassword.message as string)}</span>}
                         </div>
 
-                        <div className="auth-form__helper">
-                          <label className="auth-form__checkbox-label">
+                        <div className="helper-row">
+                          <label className="checkbox-label">
                             <input 
                               type="checkbox" 
-                              className="auth-form__checkbox"
                               {...registerSignup("agreeTerms")}
                             />
                             <span>I agree to <Link href="#" onClick={(e) => { e.preventDefault(); alert("Terms & Conditions Modal"); }}>Terms & Conditions</Link></span>
                           </label>
                         </div>
-                        {signupErrors.agreeTerms && <span className="auth-form__error-text" style={{ marginTop: '-12px' }}>{(signupErrors.agreeTerms.message as string)}</span>}
+                        {signupErrors.agreeTerms && <span className="error-text" style={{ marginTop: '-8px' }}>{(signupErrors.agreeTerms.message as string)}</span>}
 
-                        <button type="submit" className="auth-btn">
+                        <button type="submit" className="submit-auth-btn">
                           Create Account
                         </button>
 
-                        <div className="auth-social-separator">
+                        <div className="divider-row">
                           <span>Or continue with</span>
                         </div>
 
-                        <div className="auth-social-group">
-                          <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin("Google")} aria-label="Continue with Google">
+                        <div className="social-login-group">
+                          <button type="button" className="social-btn" onClick={() => handleSocialLogin("Google")} aria-label="Continue with Google">
                             <FaGoogle />
-                            <span>Google</span>
+                            <span>Continue with Google</span>
                           </button>
-                          <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin("Apple")} aria-label="Continue with Apple">
+                          <button type="button" className="social-btn" onClick={() => handleSocialLogin("Apple")} aria-label="Continue with Apple">
                             <FaApple />
-                            <span>Apple</span>
-                          </button>
-                          <button type="button" className="auth-social-btn" onClick={() => handleSocialLogin("Facebook")} aria-label="Continue with Facebook">
-                            <FaFacebookF />
-                            <span>Facebook</span>
+                            <span>Continue with Apple</span>
                           </button>
                         </div>
                       </motion.form>
                     )}
                   </AnimatePresence>
 
-                  <div className="auth-box__footer">
-                    <Link href="/" className="auth-back-home">
-                      <ArrowLeft size={14} />
-                      Back to Home
-                    </Link>
+                  <div className="auth-footer-terms">
+                    <span>By clicking Sign Up, you agree to accept Designs of Dreams's <Link href="#" onClick={(e) => e.preventDefault()}>Terms of Service</Link></span>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+        </div>
+      </div>
+
+      {/* RIGHT COLUMN: 3x4 Grid Collage */}
+      <div className="auth-right-panel">
+        <div className="auth-collage-grid">
+          {collageImages.map((img, idx) => (
+            <div key={idx} className="collage-grid-item">
+              <img src={img} alt={`Designs of Dreams Heritage Collage ${idx + 1}`} />
+            </div>
+          ))}
         </div>
       </div>
     </main>
