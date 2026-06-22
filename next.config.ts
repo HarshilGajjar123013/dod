@@ -6,6 +6,40 @@ const withPWA = withPWAInit({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
   register: true,
+  fallbacks: {
+    document: "/~offline",
+  },
+  workboxOptions: {
+    runtimeCaching: [
+      {
+        urlPattern: /\.(?:js|css)$/i,
+        handler: "StaleWhileRevalidate",
+        options: {
+          cacheName: "nextjs-static-assets",
+          expiration: { maxEntries: 64 },
+        },
+      },
+      {
+        urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
+        handler: "CacheFirst",
+        options: {
+          cacheName: "external-unsplash-images",
+          expiration: {
+            maxEntries: 100,
+            maxAgeSeconds: 30 * 24 * 60 * 60,
+          },
+        },
+      },
+      {
+        urlPattern: /\.(?:woff2?|eot|ttf|otf)$/i,
+        handler: "CacheFirst",
+        options: {
+          cacheName: "web-fonts",
+          expiration: { maxEntries: 10 },
+        },
+      },
+    ],
+  },
 });
 
 const nextConfig: NextConfig = {
