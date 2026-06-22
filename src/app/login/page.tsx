@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/store/useStore";
 import { useForm } from "react-hook-form";
@@ -63,6 +64,7 @@ const collageImages = [
 ];
 
 export default function LoginPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const [mounted, setMounted] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
@@ -82,6 +84,12 @@ export default function LoginPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted && user?.isLoggedIn) {
+      router.push("/");
+    }
+  }, [mounted, user, router]);
 
   // React Hook Form for Login
   const {
@@ -136,6 +144,7 @@ export default function LoginPage() {
       loginAction(data.email, mockName);
       setSuccessMsg(`Welcome back, ${mockName}!`);
       resetLoginForm();
+      router.push("/");
     }, 800);
   };
 
@@ -149,6 +158,7 @@ export default function LoginPage() {
       signupAction(data.email, fullName);
       setSuccessMsg(`Welcome to Designs of Dreams, ${fullName}!`);
       resetSignupForm();
+      router.push("/");
     }, 800);
   };
 
@@ -158,6 +168,7 @@ export default function LoginPage() {
     setTimeout(() => {
       loginAction(`user@${provider.toLowerCase()}.com`, `${provider} Guest`);
       setSuccessMsg(`Welcome back, connected with ${provider}!`);
+      router.push("/");
     }, 800);
   };
 

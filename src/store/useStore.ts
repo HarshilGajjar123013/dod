@@ -28,6 +28,7 @@ export interface UserSession {
   email: string;
   name: string;
   isLoggedIn: boolean;
+  avatar?: string;
 }
 
 interface ECommerceStore {
@@ -40,6 +41,7 @@ interface ECommerceStore {
   login: (email: string, name: string) => void;
   signup: (email: string, name: string) => void;
   logout: () => void;
+  updateAvatar: (avatar: string) => void;
   
   // Cart actions
   addToCart: (product: Product, quantity: number, size: string) => void;
@@ -266,6 +268,9 @@ export const useStore = create<ECommerceStore>()(
         user: { email, name, isLoggedIn: true }
       }),
       logout: () => set({ user: null, cart: [], wishlist: [] }),
+      updateAvatar: (avatar) => set((state) => ({
+        user: state.user ? { ...state.user, avatar } : null
+      })),
 
       // Cart Actions
       addToCart: (product, quantity, size) => set((state) => {

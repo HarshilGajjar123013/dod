@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useStore } from "@/store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -68,6 +69,7 @@ const mockOrders = [
 ];
 
 export default function OrderPage() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("list");
   const [selectedOrderId, setSelectedOrderId] = useState("DOD-894751");
@@ -84,6 +86,12 @@ export default function OrderPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted && !user?.isLoggedIn) {
+      router.push("/login");
+    }
+  }, [mounted, user, router]);
 
   // Handle URL Hash change
   useEffect(() => {

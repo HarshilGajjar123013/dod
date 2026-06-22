@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useStore } from "@/store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -19,6 +20,7 @@ import "./Settings.scss";
 type TabType = "privacy" | "policies" | "requests" | "refunds";
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("privacy");
   const [saveSuccess, setSaveSuccess] = useState("");
@@ -35,6 +37,12 @@ export default function SettingsPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted && !user?.isLoggedIn) {
+      router.push("/login");
+    }
+  }, [mounted, user, router]);
 
   // Handle URL Hash change
   useEffect(() => {

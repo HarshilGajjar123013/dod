@@ -297,7 +297,15 @@ const Navbar: React.FC = () => {
                   style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#FF6A00' }}
                   aria-expanded={isProfileDropdownOpen}
                 >
-                  <User size={22} style={{ stroke: '#FF6A00' }} />
+                  {user?.avatar ? (
+                    <img 
+                      src={user.avatar} 
+                      alt={user.name} 
+                      style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover", border: "1.5px solid #FF6A00" }} 
+                    />
+                  ) : (
+                    <User size={22} style={{ stroke: '#FF6A00' }} />
+                  )}
                   <span style={{ fontSize: '11px', fontFamily: 'var(--font-poppins)', fontWeight: 600, color: '#FF6A00' }}>
                     {user?.name}
                   </span>

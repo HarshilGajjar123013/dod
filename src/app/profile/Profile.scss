@@ -93,7 +93,7 @@ $brand-black: #1a1a1a;
 
     .user-details {
       min-width: 0;
-      
+
       h4 {
         font-family: $font-accent;
         font-size: 1.1rem;
@@ -147,6 +147,7 @@ $brand-black: #1a1a1a;
       &:hover {
         background-color: rgba($brand-orange, 0.03);
         color: $brand-orange;
+
         svg {
           color: $brand-orange;
         }
@@ -155,6 +156,7 @@ $brand-black: #1a1a1a;
       &.is-active {
         background-color: $brand-orange;
         color: $brand-white;
+
         svg {
           color: $brand-white;
         }
@@ -360,5 +362,123 @@ $brand-black: #1a1a1a;
   &:hover {
     background-color: $brand-orange;
     box-shadow: 0 10px 20px rgba($brand-orange, 0.15);
+  }
+}
+
+.mobile-only-profile-links {
+  display: none; // Hidden on desktop
+
+  @media (max-width: 992px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-square-card {
+    background-color: #FAF9F6;
+    border: 1px solid rgba($brand-black, 0.08);
+    border-radius: 20px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.015);
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: $brand-orange;
+      background-color: rgba($brand-white, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+    }
+
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+
+      &.bg-orange {
+        background-color: rgba($brand-orange, 0.1);
+      }
+
+      &.bg-gold {
+        background-color: rgba(#C5A059, 0.1);
+      }
+
+      .icon-orange {
+        color: $brand-orange;
+      }
+
+      .icon-gold {
+        color: #C5A059;
+      }
+    }
+
+    &:hover .icon-circle {
+      transform: scale(1.1);
+    }
+
+    .card-title {
+      font-family: $font-accent;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: $brand-black;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-family: $font-body;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba($brand-black, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+.mobile-only-logout-container {
+  display: none; // Hidden on desktop
+
+  @media (max-width: 992px) {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .mobile-logout-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 50px;
+    border: none;
+    background-color: $brand-black;
+    color: $brand-white;
+    font-family: $font-body;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: $brand-orange;
+      box-shadow: 0 10px 20px rgba($brand-orange, 0.15);
+    }
   }
 }

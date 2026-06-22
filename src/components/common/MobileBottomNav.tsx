@@ -90,9 +90,10 @@ export default function MobileBottomNav() {
     },
     {
       label: "Profile",
-      href: "/login",
+      href: (mounted && user?.isLoggedIn) ? "/profile" : "/login",
       icon: User,
-      avatarLabel: (mounted && user?.isLoggedIn) ? user.name.charAt(0).toUpperCase() : null,
+      avatarLabel: (mounted && user?.isLoggedIn && !user?.avatar) ? user.name.charAt(0).toUpperCase() : null,
+      avatarUrl: (mounted && user?.isLoggedIn && user?.avatar) ? user.avatar : null,
     },
     {
       label: "More",
@@ -108,7 +109,7 @@ export default function MobileBottomNav() {
     if (pathname?.startsWith("/collection") || pathname?.startsWith("/product")) return 1;
     if (pathname === "/wishlist") return 2;
     if (pathname === "/cart") return 3;
-    if (pathname === "/login") return 4;
+    if (pathname === "/login" || pathname === "/profile" || pathname === "/order" || pathname === "/settings") return 4;
     return 0;
   };
 
@@ -217,7 +218,9 @@ export default function MobileBottomNav() {
                 exit={{ scale: 0, rotate: 45, opacity: 0 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
               >
-                {activeItem.avatarLabel ? (
+                {activeItem.avatarUrl ? (
+                  <img src={activeItem.avatarUrl} alt={activeItem.label} style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }} />
+                ) : activeItem.avatarLabel ? (
                   <div className="w-6 h-6 rounded-full bg-[#FF6A00]/10 text-[#FF6A00] text-[11px] font-bold flex items-center justify-center">
                     {activeItem.avatarLabel}
                   </div>
@@ -267,7 +270,9 @@ export default function MobileBottomNav() {
                     }}
                     transition={{ type: "spring", stiffness: 350, damping: 25 }}
                   >
-                    {item.avatarLabel ? (
+                    {item.avatarUrl ? (
+                      <img src={item.avatarUrl} alt={item.label} style={{ width: "20px", height: "20px", borderRadius: "50%", objectFit: "cover" }} />
+                    ) : item.avatarLabel ? (
                       <div className="w-5 h-5 rounded-full bg-zinc-100 text-zinc-600 text-[10px] font-bold flex items-center justify-center border border-zinc-200">
                         {item.avatarLabel}
                       </div>
