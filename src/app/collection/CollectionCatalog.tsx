@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useStore, Product } from "@/store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Heart, ShoppingBag, Eye, X, Star, Check, ChevronRight, SlidersHorizontal } from "lucide-react";
+import { Search, Heart, ShoppingBag, X, Star, Check, ChevronRight, SlidersHorizontal } from "lucide-react";
 import "./CollectionCatalog.scss";
 
 export default function CollectionCatalog() {
@@ -25,11 +25,7 @@ export default function CollectionCatalog() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("default");
   
-  // Quick View Modal
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedSize, setSelectedSize] = useState<string>("");
-  const [selectedQty, setSelectedQty] = useState<number>(1);
-  const [addedToCartSuccess, setAddedToCartSuccess] = useState(false);
+
 
   // Parse query params on mount/change
   useEffect(() => {
@@ -88,22 +84,7 @@ export default function CollectionCatalog() {
     return a.id - b.id; // Default / ID sort
   });
 
-  const handleOpenQuickView = (product: Product) => {
-    setSelectedProduct(product);
-    setSelectedSize(product.sizes[0] || "One Size");
-    setSelectedQty(1);
-    setAddedToCartSuccess(false);
-  };
 
-  const handleAddToCart = () => {
-    if (!selectedProduct) return;
-    addToCart(selectedProduct, selectedQty, selectedSize);
-    setAddedToCartSuccess(true);
-    setTimeout(() => {
-      setAddedToCartSuccess(false);
-      setSelectedProduct(null);
-    }, 1500);
-  };
 
   const isFavorited = (productId: number) => wishlist.some((item) => item.id === productId);
 
@@ -216,9 +197,14 @@ export default function CollectionCatalog() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
+                  onMouseEnter={() => {
+                    import("@/lib/pwa/cacheManager").then(({ cacheManager }) => {
+                      cacheManager.precacheProduct(product);
+                    });
+                  }}
                 >
                   {/* Image wrapper */}
-                  <div className="product-card__image-box" onClick={() => handleOpenQuickView(product)}>
+                  <div className="product-card__image-box" onClick={() => router.push(`/product/${product.id}`)}>
                     <Image
                       src={product.image}
                       alt={product.title}
@@ -240,10 +226,10 @@ export default function CollectionCatalog() {
                       </button>
                       <button 
                         className="action-btn"
-                        onClick={() => handleOpenQuickView(product)}
-                        title="Quick View Details"
+                        onClick={() => router.push(`/product/${product.id}`)}
+                        title="View Details"
                       >
-                        <Eye size={18} />
+                        <ChevronRight size={18} />
                       </button>
                     </div>
                   </div>
@@ -251,7 +237,7 @@ export default function CollectionCatalog() {
                   {/* Metadata */}
                   <div className="product-card__info">
                     <span className="product-card__category">{product.subcategory}</span>
-                    <h3 className="product-card__title" onClick={() => handleOpenQuickView(product)}>
+                    <h3 className="product-card__title" onClick={() => router.push(`/product/${product.id}`)}>
                       {product.title}
                     </h3>
                     
@@ -271,120 +257,7 @@ export default function CollectionCatalog() {
 
       </div>
 
-      {/* QUICK VIEW DETAILS MODAL */}
-      <AnimatePresence>
-        {selectedProduct && (
-          <div className="popup-overlay" onClick={() => setSelectedProduct(null)}>
-            <motion.div 
-              className="popup-box"
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 30 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button className="popup-box__close" onClick={() => setSelectedProduct(null)}>
-                <X size={20} />
-              </button>
 
-              <div className="popup-box__grid">
-                {/* Visual Half */}
-                <div className="popup-box__visual">
-                  <Image
-                    src={selectedProduct.image}
-                    alt={selectedProduct.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <div className="popup-box__visual-overlay" />
-                  <span className="popup-box__visual-badge">{selectedProduct.badge}</span>
-                </div>
-
-                {/* Info Half */}
-                <div className="popup-box__info">
-                  <span className="popup-box__label">{selectedProduct.subcategory}</span>
-                  <h2 className="popup-box__title">{selectedProduct.title}</h2>
-                  <div className="popup-box__price-rating">
-                    <span className="price">₹{selectedProduct.price.toLocaleString("en-IN")}</span>
-                    <div className="rating">
-                      <Star size={14} fill="currentColor" className="text-amber-500" />
-                      <span>{selectedProduct.rating} / 5.0</span>
-                    </div>
-                  </div>
-                  
-                  <div className="popup-box__divider" />
-                  <p className="popup-box__desc">{selectedProduct.longDesc}</p>
-                  
-                  {/* Size Selectors */}
-                  <div className="popup-box__option">
-                    <span className="option-label">Select Atelier Size</span>
-                    <div className="size-selector">
-                      {selectedProduct.sizes.map((size) => (
-                        <button
-                          key={size}
-                          className={`size-btn ${selectedSize === size ? "is-active" : ""}`}
-                          onClick={() => setSelectedSize(size)}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Quantity Selectors */}
-                  <div className="popup-box__option">
-                    <span className="option-label">Quantity</span>
-                    <div className="qty-selector">
-                      <button onClick={() => setSelectedQty(Math.max(1, selectedQty - 1))}>-</button>
-                      <span>{selectedQty}</span>
-                      <button onClick={() => setSelectedQty(selectedQty + 1)}>+</button>
-                    </div>
-                  </div>
-
-                  {/* CTA Buttons */}
-                  <div className="popup-box__ctas">
-                    <button 
-                      className={`cart-btn ${addedToCartSuccess ? "is-success" : ""}`}
-                      onClick={handleAddToCart}
-                      disabled={addedToCartSuccess}
-                    >
-                      {addedToCartSuccess ? (
-                        <>
-                          Added Successfully <Check size={16} />
-                        </>
-                      ) : (
-                        <>
-                          Add to Shopping Bag <ShoppingBag size={16} />
-                        </>
-                      )}
-                    </button>
-                    
-                    <button 
-                      className={`wishlist-btn ${isFavorited(selectedProduct.id) ? "is-active" : ""}`}
-                      onClick={() => toggleWishlist(selectedProduct)}
-                    >
-                      <Heart size={18} fill={isFavorited(selectedProduct.id) ? "var(--color-primary)" : "none"} />
-                    </button>
-                  </div>
-
-                  <div className="popup-box__meta-details">
-                    <div className="meta-row">
-                      <span>Fabrics:</span>
-                      <strong>{selectedProduct.fabrics.join(", ")}</strong>
-                    </div>
-                    <div className="meta-row">
-                      <span>Heritage Details:</span>
-                      <strong>{selectedProduct.features.join(", ")}</strong>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </section>
   );

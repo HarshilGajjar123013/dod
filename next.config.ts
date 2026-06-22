@@ -6,6 +6,7 @@ const withPWA = withPWAInit({
   dest: "public",
   disable: false, // Enabled for testing PWA installation
   register: true,
+  customWorkerSrc: "worker",
 });
 
 const nextConfig: NextConfig = {
@@ -19,6 +20,15 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/admin",
+        destination: "/",
+        permanent: true,
+      },
+    ];
   },
 };
 

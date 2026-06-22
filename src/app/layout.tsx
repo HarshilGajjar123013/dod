@@ -5,6 +5,8 @@ import "./globals.scss";
 import Preloader from "@/components/common/Preloader/Preloader";
 import Navbar from "@/components/common/Navbar/Navbar";
 import Footer from "@/components/common/Footer";
+import PWASyncProvider from "@/components/pwa/PWASyncProvider";
+import MobileBottomNav from "@/components/pwa/MobileBottomNav";
 
 const marcellus = Marcellus({
   weight: "400",
@@ -29,21 +31,43 @@ const smoochSans = Smooch_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Designs Of Dreams",
-  description: "Premium heritage fashion and artisanal clothing.",
+  title: "Designs Of Dreams | Premium Indian Handlooms",
+  description: "Designs of Dreams (DOD Shop) offers premium heritage Indian fashion and artisanal hand-woven clothing, sarees, kurtis, and designer blouses directly from local weavers.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "DOD",
+    statusBarStyle: "black-translucent",
+    title: "DOD Shop",
   },
   formatDetection: {
     telephone: false,
   },
+  openGraph: {
+    title: "Designs of Dreams | Premium Indian Handlooms",
+    description: "Shop artisanal heritage clothing direct from Indian weavers. Premium Sarees, Kurtis, and Blouses.",
+    url: "https://designs-of-dreams.vercel.app",
+    siteName: "Designs of Dreams",
+    images: [
+      {
+        url: "/screenshots/screenshot-desktop.png",
+        width: 1920,
+        height: 1080,
+        alt: "Designs of Dreams Saree Catalog",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Designs of Dreams | Premium Indian Handlooms",
+    description: "Premium heritage clothing direct from Indian weavers.",
+    images: ["/screenshots/screenshot-desktop.png"],
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FF6A00",
+  themeColor: "#6F8F7A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -62,10 +86,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col relative" suppressHydrationWarning>
-        <Preloader />
-        <Navbar />
-        {children}
-        <Footer />
+        <PWASyncProvider>
+          <Preloader />
+          <Navbar />
+          <div className="flex-grow">{children}</div>
+          <Footer />
+          <MobileBottomNav />
+        </PWASyncProvider>
       </body>
     </html>
   );

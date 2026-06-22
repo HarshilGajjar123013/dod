@@ -1,24 +1,76 @@
 {
   "name": "Designs of Dreams",
-  "short_name": "DOD",
-  "description": "Premium heritage fashion and artisanal clothing.",
+  "short_name": "DOD Shop",
+  "description": "Premium heritage fashion and artisanal handloom clothing.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#FF6A00",
+  "background_color": "#F3EFEA",
+  "theme_color": "#6F8F7A",
   "orientation": "portrait-primary",
+  "categories": ["shopping", "fashion"],
+  "shortcuts": [
+    {
+      "name": "View Cart",
+      "short_name": "Cart",
+      "url": "/cart",
+      "description": "Open your shopping cart",
+      "icons": [{ "src": "/icons/shortcut-cart.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "View Wishlist",
+      "short_name": "Wishlist",
+      "url": "/wishlist",
+      "description": "Open your saved products",
+      "icons": [{ "src": "/icons/shortcut-wishlist.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Explore Collections",
+      "short_name": "Collections",
+      "url": "/collection",
+      "description": "Browse ethnic handloom collections",
+      "icons": [{ "src": "/icons/shortcut-collection.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "DOD Shop mobile storefront showing premium handlooms"
+    },
+    {
+      "src": "/screenshots/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "DOD Shop desktop collection view"
+    }
+  ],
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

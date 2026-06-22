@@ -4,13 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { 
-  ArrowUpRight, 
-  Mail, 
-  MapPin, 
-  Phone, 
-  Sparkles, 
-  Clock 
+import {
+  ArrowUpRight,
+  Mail,
+  MapPin,
+  Phone,
+  Sparkles,
+  Clock
 } from "lucide-react";
 import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
 import "./Footer.scss";
@@ -78,10 +78,10 @@ export default function Footer() {
           </div>
           <form className="footer-newsletter__form" onSubmit={handleSubscribe}>
             <div className="footer-newsletter__input-group">
-              <input 
-                type="email" 
-                placeholder="Enter your email address" 
-                required 
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                required
                 className="footer-newsletter__input"
               />
               <span className="footer-newsletter__line" />
@@ -97,7 +97,7 @@ export default function Footer() {
       {/* Main Links Directory */}
       <div className="footer-main">
         <div className="footer-main__container">
-          
+
           {/* Brand Info Column */}
           <div className="footer-brand">
             <Link href="/" className="footer-brand__logo">
@@ -172,14 +172,14 @@ export default function Footer() {
           <p className="footer-copyright">
             &copy; {currentYear} DESIGNS OF DREAMS. Rooted in Culture, Crafted for Generations.
           </p>
-          
+
           <div className="footer-bottom__right">
             <div className="footer-socials">
               {socialLinks.map((social, i) => (
-                <a 
-                  key={i} 
-                  href={social.href} 
-                  aria-label={social.label} 
+                <a
+                  key={i}
+                  href={social.href}
+                  aria-label={social.label}
                   className="footer-social-btn"
                 >
                   {social.icon}

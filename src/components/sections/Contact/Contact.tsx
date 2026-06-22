@@ -35,9 +35,9 @@ export default function Contact() {
   return (
     <section className="contact-section">
       <div className="contact-section__container">
-        
+
         {/* Left Side: Editorial Info */}
-        <motion.div 
+        <motion.div
           className="contact-info"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -91,7 +91,7 @@ export default function Contact() {
         </motion.div>
 
         {/* Right Side: Appointment Booking Form */}
-        <motion.div 
+        <motion.div
           className="contact-booking"
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -100,12 +100,12 @@ export default function Contact() {
           <div className="contact-booking__form-box">
             <h3>Request Styling Session</h3>
             <p>Fill out the details below, and our atelier concierge will contact you within 24 hours to confirm your private experience.</p>
-            
+
             <form onSubmit={handleSubmit} className="booking-form">
               <div className="booking-form__group">
-                <input 
-                  type="text" 
-                  required 
+                <input
+                  type="text"
+                  required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Your Full Name"
@@ -116,9 +116,9 @@ export default function Contact() {
 
               <div className="booking-form__row">
                 <div className="booking-form__group">
-                  <input 
-                    type="email" 
-                    required 
+                  <input
+                    type="email"
+                    required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     placeholder="Email Address"
@@ -128,9 +128,9 @@ export default function Contact() {
                 </div>
 
                 <div className="booking-form__group">
-                  <input 
-                    type="tel" 
-                    required 
+                  <input
+                    type="tel"
+                    required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     placeholder="Phone Number"
@@ -142,7 +142,7 @@ export default function Contact() {
 
               <div className="booking-form__row">
                 <div className="booking-form__group">
-                  <select 
+                  <select
                     value={form.interest}
                     onChange={(e) => setForm({ ...form, interest: e.target.value })}
                     className="booking-form__input booking-form__select"
@@ -156,9 +156,9 @@ export default function Contact() {
                 </div>
 
                 <div className="booking-form__group booking-form__group--date">
-                  <input 
-                    type="date" 
-                    required 
+                  <input
+                    type="date"
+                    required
                     value={form.date}
                     onChange={(e) => setForm({ ...form, date: e.target.value })}
                     className="booking-form__input booking-form__date"
@@ -169,7 +169,7 @@ export default function Contact() {
               </div>
 
               <div className="booking-form__group">
-                <textarea 
+                <textarea
                   rows={4}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -188,7 +188,7 @@ export default function Contact() {
             {/* Success Animation Notification */}
             <AnimatePresence>
               {submitted && (
-                <motion.div 
+                <motion.div
                   className="booking-form__success"
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}

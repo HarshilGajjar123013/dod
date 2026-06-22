@@ -201,22 +201,22 @@ const Navbar: React.FC = () => {
               <li className="navbar-nav__item"><Link href="/" className="navbar-nav__link">Home</Link></li>
               <li className="navbar-nav__item"><Link href="/about" className="navbar-nav__link">About</Link></li>
               {/* MEGA MENU ITEM */}
-              <li 
+              <li
                 className="navbar-nav__item has-mega"
                 onMouseEnter={() => setIsMegaOpen(true)}
                 onMouseLeave={() => setIsMegaOpen(false)}
               >
-                <div 
-                  className="navbar-nav__link" 
+                <div
+                  className="navbar-nav__link"
                   style={{ cursor: 'pointer' }}
                   onClick={() => setIsMegaOpen(!isMegaOpen)}
                 >
-                  Collection <ChevronRight size={14} style={{transform: isMegaOpen ? 'rotate(-90deg)' : 'rotate(90deg)', transition: 'transform 0.3s'}} />
+                  Collection <ChevronRight size={14} style={{ transform: isMegaOpen ? 'rotate(-90deg)' : 'rotate(90deg)', transition: 'transform 0.3s' }} />
                 </div>
-                
+
                 <AnimatePresence>
                   {isMegaOpen && (
-                    <motion.div 
+                    <motion.div
                       className="mega-menu"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -274,8 +274,8 @@ const Navbar: React.FC = () => {
 
           {/* Icons & Hamburger */}
           <div className="navbar-actions">
-            <button 
-              className="navbar-actions__btn desktop-only" 
+            <button
+              className="navbar-actions__btn desktop-only"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Open Search"
             >
@@ -336,9 +336,9 @@ const Navbar: React.FC = () => {
                       <ul className="mobile-list">
                         {mobileNavLinks(cartCount, wishlistCount, userLoggedIn).map((link) => (
                           <li key={link.name}>
-                            <Link 
-                              href={link.href} 
-                              className="mobile-list__item" 
+                            <Link
+                              href={link.href}
+                              className="mobile-list__item"
                               onClick={(e) => {
                                 if (link.hasDrillDown) {
                                   e.preventDefault();
@@ -463,7 +463,7 @@ const Navbar: React.FC = () => {
             >
               <span className="navbar-search-overlay__subtitle">Discover Our Masterpieces</span>
               <h2 className="navbar-search-overlay__title">What are you looking for?</h2>
-              
+
               <form onSubmit={handleSearchSubmit} className="navbar-search-overlay__form">
                 <div className="navbar-search-overlay__input-wrapper">
                   <input
