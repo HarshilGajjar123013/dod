@@ -86,7 +86,7 @@ export default function MobileBottomNav() {
     },
     {
       label: "More",
-      href: "/settings",
+      href: "/more",
       icon: MoreHorizontal,
     },
   ];
@@ -98,7 +98,7 @@ export default function MobileBottomNav() {
     if (pathname === "/wishlist") return 2;
     if (pathname === "/cart") return 3;
     if (pathname === "/login") return 4;
-    if (pathname === "/settings") return 5;
+    if (pathname === "/more") return 5;
     return 0;
   };
 
