@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useStore, Product } from "@/store/useStore";
-import { cacheManager } from "@/lib/pwa/cacheManager";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -144,8 +143,6 @@ export default function ProductDetails() {
       } else {
         setActiveSize(matchedProduct.sizes[0] || "M");
       }
-      // Log to PWA recently viewed manager
-      cacheManager.addToRecentlyViewed(matchedProduct);
     }
   }, [productId, matchedProduct]);
 

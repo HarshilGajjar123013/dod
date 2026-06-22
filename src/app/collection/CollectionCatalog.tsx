@@ -197,11 +197,6 @@ export default function CollectionCatalog() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
-                  onMouseEnter={() => {
-                    import("@/lib/pwa/cacheManager").then(({ cacheManager }) => {
-                      cacheManager.precacheProduct(product);
-                    });
-                  }}
                 >
                   {/* Image wrapper */}
                   <div className="product-card__image-box" onClick={() => router.push(`/product/${product.id}`)}>
