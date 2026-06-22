@@ -6,6 +6,7 @@ import Preloader from "@/components/common/Preloader/Preloader";
 import Navbar from "@/components/common/Navbar/Navbar";
 import Footer from "@/components/common/Footer";
 import MobileBottomNav from "@/components/common/MobileBottomNav";
+import PwaInstallPrompt from "@/components/common/PwaInstallPrompt";
 
 const marcellus = Marcellus({
   weight: "400",
@@ -68,6 +69,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <MobileBottomNav />
+        <PwaInstallPrompt />
       </body>
     </html>
   );
