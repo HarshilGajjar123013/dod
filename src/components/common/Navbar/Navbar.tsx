@@ -262,7 +262,7 @@ const Navbar: React.FC = () => {
             >
               <Search size={22} />
             </button>
-            <Link href="/cart" className="navbar-actions__btn navbar-actions__btn--badge">
+            <Link href="/cart" className="navbar-actions__btn navbar-actions__btn--badge desktop-only">
               <ShoppingBag size={22} />
               {cartCount > 0 && <span className="navbar-actions__count">{cartCount}</span>}
             </Link>
