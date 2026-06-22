@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { X, Download, Smartphone } from "lucide-react";
+import { X, Download, Smartphone, Share } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -15,15 +15,35 @@ interface BeforeInstallPromptEvent extends Event {
 
 export default function PwaInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isIos, setIsIos] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // 1. Detect if app is already running in standalone mode (installed)
+    const isStandalone = 
+      window.matchMedia("(display-mode: standalone)").matches || 
+      (window.navigator as any).standalone === true;
+
+    if (isStandalone) return;
+
+    // 2. Detect iOS Device Safari
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+    // Safari user agent contains 'safari' but not 'chrome', 'crios' (Chrome on iOS), or 'firefox'
+    const isSafari = /safari/.test(userAgent) && !/crios/.test(userAgent) && !/fxios/.test(userAgent) && !/chrome/.test(userAgent);
+
+    const isDismissed = sessionStorage.getItem("pwa_install_dismissed");
+
+    if (isIosDevice && isSafari && !isDismissed) {
+      setIsIos(true);
+      setIsVisible(true);
+      return;
+    }
+
+    // 3. Android/Chrome/Windows installation prompt event listener
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      // Show install prompt option if not dismissed in current session
-      const isDismissed = sessionStorage.getItem("pwa_install_dismissed");
       if (!isDismissed) {
         setIsVisible(true);
       }
@@ -39,19 +59,13 @@ export default function PwaInstallPrompt() {
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
     
-    // Show the native browser install prompt
     await deferredPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice;
     
     if (outcome === "accepted") {
-      console.log("User accepted the install prompt");
-    } else {
-      console.log("User dismissed the install prompt");
+      console.log("User accepted install");
     }
     
-    // Clear deferred prompt variable
     setDeferredPrompt(null);
     setIsVisible(false);
   };
@@ -82,7 +96,7 @@ export default function PwaInstallPrompt() {
                 Install Designs of Dreams
               </h4>
               <p className="text-xs text-zinc-400 mt-0.5">
-                Enjoy offline access, faster load speeds, and notifications.
+                Enjoy offline access, faster load speeds, and push notifications.
               </p>
             </div>
           </div>
@@ -94,20 +108,36 @@ export default function PwaInstallPrompt() {
           </button>
         </div>
 
-        <div className="flex gap-2 justify-end mt-1">
-          <button
-            onClick={handleDismiss}
-            className="px-4 py-2 text-xs font-semibold tracking-widest uppercase text-zinc-400 hover:text-white transition-colors duration-200"
-          >
-            Later
-          </button>
-          <button
-            onClick={handleInstallClick}
-            className="px-5 py-2 text-xs font-semibold tracking-widest uppercase bg-amber-500 text-zinc-950 hover:bg-amber-600 transition-all duration-200 flex items-center gap-1.5 rounded"
-          >
-            <Download size={14} /> Install App
-          </button>
-        </div>
+        {isIos ? (
+          // Custom instruction layout for Apple iOS devices
+          <div className="mt-2 text-xs bg-zinc-900 p-3 rounded-lg border border-zinc-800 text-zinc-300 leading-relaxed">
+            <p className="mb-2">To install this app on your iPhone:</p>
+            <ol className="list-decimal pl-4 space-y-1.5">
+              <li>
+                Tap the Safari <strong>Share</strong> button <Share size={14} className="inline-block mx-1 text-amber-500" /> below.
+              </li>
+              <li>
+                Scroll down and select <strong>"Add to Home Screen"</strong>.
+              </li>
+            </ol>
+          </div>
+        ) : (
+          // Install trigger layout for Chrome/Android/Windows
+          <div className="flex gap-2 justify-end mt-1">
+            <button
+              onClick={handleDismiss}
+              className="px-4 py-2 text-xs font-semibold tracking-widest uppercase text-zinc-400 hover:text-white transition-colors duration-200"
+            >
+              Later
+            </button>
+            <button
+              onClick={handleInstallClick}
+              className="px-5 py-2 text-xs font-semibold tracking-widest uppercase bg-amber-500 text-zinc-950 hover:bg-amber-600 transition-all duration-200 flex items-center gap-1.5 rounded"
+            >
+              <Download size={14} /> Install App
+            </button>
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
