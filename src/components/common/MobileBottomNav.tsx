@@ -11,7 +11,7 @@ import {
   Heart, 
   ShoppingBag, 
   User, 
-  Settings 
+  MoreHorizontal 
 } from "lucide-react";
 
 // Path generator that creates a smooth circular dip centered on the active tab's column position
@@ -85,9 +85,9 @@ export default function MobileBottomNav() {
       avatarLabel: (mounted && user?.isLoggedIn) ? user.name.charAt(0).toUpperCase() : null,
     },
     {
-      label: "Setting",
+      label: "More",
       href: "/settings",
-      icon: Settings,
+      icon: MoreHorizontal,
     },
   ];
 
