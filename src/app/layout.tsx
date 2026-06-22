@@ -5,6 +5,7 @@ import "./globals.scss";
 import Preloader from "@/components/common/Preloader/Preloader";
 import Navbar from "@/components/common/Navbar/Navbar";
 import Footer from "@/components/common/Footer";
+import MobileBottomNav from "@/components/common/MobileBottomNav";
 
 const marcellus = Marcellus({
   weight: "400",
@@ -66,6 +67,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <MobileBottomNav />
       </body>
     </html>
   );
