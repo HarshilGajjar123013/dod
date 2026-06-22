@@ -15,7 +15,9 @@ import {
   LogOut, 
   ChevronRight,
   ShieldCheck,
-  Languages
+  Languages,
+  BookOpen,
+  Mail
 } from "lucide-react";
 
 export default function SettingsPage() {
@@ -192,6 +194,45 @@ export default function SettingsPage() {
                   <option value="dark">Atelier Dark</option>
                 </select>
               </div>
+            </div>
+          </div>
+
+          {/* Boutique Information */}
+          <div className="p-6 rounded-2xl bg-white border border-[#C5A059]/10 shadow-sm">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#C5A059] mb-4" style={{ fontFamily: "var(--font-poppins)" }}>
+              Boutique Information
+            </h3>
+
+            <div className="space-y-4">
+              {/* About Us Link */}
+              <Link 
+                href="/about"
+                className="flex items-center justify-between py-2 border-b border-zinc-100 last:border-0 hover:opacity-80 transition-opacity"
+              >
+                <div className="flex items-center gap-3">
+                  <BookOpen size={18} className="text-zinc-400" />
+                  <div>
+                    <p className="text-sm font-medium">About Designs of Dreams</p>
+                    <p className="text-[11px] text-zinc-500">Read our heritage brand story and weaver partnerships</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-[#C5A059]" />
+              </Link>
+
+              {/* Contact Us Link */}
+              <Link 
+                href="/contact"
+                className="flex items-center justify-between py-2 border-b border-zinc-100 last:border-0 hover:opacity-80 transition-opacity"
+              >
+                <div className="flex items-center gap-3">
+                  <Mail size={18} className="text-zinc-400" />
+                  <div>
+                    <p className="text-sm font-medium">Contact Atelier</p>
+                    <p className="text-[11px] text-zinc-500">Get in touch with customer support and custom tailoring</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-[#C5A059]" />
+              </Link>
             </div>
           </div>
 
