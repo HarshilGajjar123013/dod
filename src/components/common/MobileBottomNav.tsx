@@ -40,15 +40,20 @@ const getPath = (index: number) => {
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Zustand Store values
   const cart = useStore((state) => state.cart);
   const wishlist = useStore((state) => state.wishlist);
   const user = useStore((state) => state.user);
 
-  // Quantities for Badges
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-  const wishlistCount = wishlist.length;
+  // Quantities for Badges (only access on client after mounting)
+  const cartCount = mounted ? cart.reduce((total, item) => total + item.quantity, 0) : 0;
+  const wishlistCount = mounted ? wishlist.length : 0;
 
   const navItems = [
     {
@@ -77,7 +82,7 @@ export default function MobileBottomNav() {
       label: "Profile",
       href: "/login",
       icon: User,
-      avatarLabel: user?.isLoggedIn ? user.name.charAt(0).toUpperCase() : null,
+      avatarLabel: (mounted && user?.isLoggedIn) ? user.name.charAt(0).toUpperCase() : null,
     },
     {
       label: "Setting",
