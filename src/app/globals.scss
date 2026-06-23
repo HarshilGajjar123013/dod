@@ -1,21 +1,21 @@
 @use "../styles/variables.scss" as *;
 
 // Global Core Stylesheets
-@import "../components/common/Navbar/Navbar.scss";
-@import "../components/common/Footer.scss";
-@import "../components/common/Preloader/Preloader.scss";
+@use "../components/common/Navbar/Navbar.scss";
+@use "../components/common/Footer.scss";
+@use "../components/common/Preloader/Preloader.scss";
 
 // Homepage Sections Stylesheets
-@import "../components/sections/Hero/Hero.scss";
-@import "../components/sections/Collection/Collection.scss";
-@import "../components/sections/Gallery/Gallery.scss";
-@import "../components/sections/FAQ/FAQ.scss";
+@use "../components/sections/Hero/Hero.scss";
+@use "../components/sections/Collection/Collection.scss";
+@use "../components/sections/Gallery/Gallery.scss";
+@use "../components/sections/FAQ/FAQ.scss";
 
 // Inner Pages Sections Stylesheets
-@import "../components/sections/Contact/Contact.scss";
-@import "../components/sections/About/About.scss";
+@use "../components/sections/Contact/Contact.scss";
+@use "../components/sections/About/About.scss";
 
 // E-commerce Page Stylesheets
-@import "./collection/CollectionCatalog.scss";
-@import "./cart/Cart.scss";
-@import "./login/Login.scss";
+@use "./collection/CollectionCatalog.scss";
+@use "./cart/Cart.scss";
+@use "./login/Login.scss";

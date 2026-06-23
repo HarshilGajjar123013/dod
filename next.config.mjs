@@ -1,6 +1,10 @@
+// next.config.mjs
 import path from "path";
-import type { NextConfig } from "next";
+import { fileURLToPath } from "url";
 import withPWAInit from "@ducanh2912/next-pwa";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const withPWA = withPWAInit({
   dest: "public",
@@ -26,7 +30,7 @@ const withPWA = withPWAInit({
           cacheName: "external-unsplash-images",
           expiration: {
             maxEntries: 100,
-            maxAgeSeconds: 30 * 24 * 60 * 60,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
           },
         },
       },
@@ -42,9 +46,10 @@ const withPWA = withPWAInit({
   },
 });
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   turbopack: {
-    root: path.join(__dirname),
+    root: __dirname,
   },
   images: {
     remotePatterns: [
@@ -66,4 +71,3 @@ const nextConfig: NextConfig = {
 };
 
 export default withPWA(nextConfig);
-
