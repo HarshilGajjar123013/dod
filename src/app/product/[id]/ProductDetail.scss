@@ -1509,7 +1509,11 @@
         display: flex;
         align-items: center;
         gap: 16px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+
+        @media (max-width: 992px) {
+          gap: 12px;
+        }
 
         @media (max-width: 600px) {
           flex-direction: column;
@@ -1522,6 +1526,15 @@
           display: flex;
           align-items: center;
           gap: 12px;
+
+          input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin: 0;
+          }
 
           @media (max-width: 600px) {
             background: rgba(255, 255, 255, 0.5);
