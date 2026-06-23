@@ -41,9 +41,11 @@ $brand-black: #1a1a1a;
   &::-webkit-scrollbar {
     width: 5px;
   }
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
+
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -199,13 +201,14 @@ $brand-black: #1a1a1a;
       border-color: $brand-orange;
       box-shadow: 0 0 0 3px rgba($brand-orange, 0.08);
 
-      ~ .input-icon {
+      ~.input-icon {
         color: $brand-orange;
       }
     }
 
     &.is-invalid {
       border-color: #EF4444;
+
       &:focus {
         box-shadow: 0 0 0 3px rgba(#EF4444, 0.08);
       }
@@ -253,9 +256,11 @@ $brand-black: #1a1a1a;
     &.weak {
       background-color: #EF4444;
     }
+
     &.medium {
       background-color: #F59E0B;
     }
+
     &.strong {
       background-color: #10B981;
     }
@@ -443,6 +448,7 @@ $brand-black: #1a1a1a;
     color: #059669;
     border: 1px solid rgba(#10B981, 0.12);
   }
+
   &.error {
     background-color: rgba(#EF4444, 0.08);
     color: #DC2626;

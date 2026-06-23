@@ -8,13 +8,13 @@ import { useStore } from "@/store/useStore";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { 
-  CheckCircle, 
-  AlertCircle, 
-  Sparkles, 
-  Mail, 
-  Lock, 
-  User, 
+import {
+  CheckCircle,
+  AlertCircle,
+  Sparkles,
+  Mail,
+  Lock,
+  User,
   Home,
   Phone,
   Eye,
@@ -49,17 +49,17 @@ const signupSchema = z.object({
 
 // Collage grid images representing Designs of Dreams collection
 const collageImages = [
-  "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1610030470298-4058fbb6190c?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1609357518652-6cf0416f0cbe?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80", 
-  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80", 
+  "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1608748010899-18f300247112?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1610030470298-4058fbb6190c?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1609357518652-6cf0416f0cbe?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
   "https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&w=400&q=80"
 ];
 
@@ -137,7 +137,7 @@ export default function LoginPage() {
   const onLogin = (data: any) => {
     setErrorMsg("");
     setSuccessMsg("");
-    
+
     // Simulate API Call
     setTimeout(() => {
       const mockName = data.email.split("@")[0].charAt(0).toUpperCase() + data.email.split("@")[0].slice(1);
@@ -184,7 +184,7 @@ export default function LoginPage() {
     <main className="auth-page-wrapper">
       {/* LEFT COLUMN: Form panel */}
       <div className="auth-left-panel">
-        
+
         {/* Mobile Top Header Decoration */}
         <div className="auth-mobile-header">
           <div className="auth-mobile-header__content">
@@ -193,8 +193,8 @@ export default function LoginPage() {
           </div>
           <div className="mobile-header-wave-wrapper">
             <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <path 
-                d="M0 32L60 42.7C120 53 240 75 360 80C480 85 600 75 720 64C840 53 960 43 1080 42.7C1200 43 1320 53 1380 58.7L1440 64V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V32Z" 
+              <path
+                d="M0 32L60 42.7C120 53 240 75 360 80C480 85 600 75 720 64C840 53 960 43 1080 42.7C1200 43 1320 53 1380 58.7L1440 64V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V32Z"
                 fill="#ffffff"
               />
             </svg>
@@ -202,7 +202,7 @@ export default function LoginPage() {
         </div>
 
         <div className="auth-form-container">
-          
+
           {/* Logo & Brand Header */}
           <div className="auth-brand">
             <Link href="/" className="auth-brand-link">
@@ -215,7 +215,7 @@ export default function LoginPage() {
             <AnimatePresence mode="wait">
               {user?.isLoggedIn ? (
                 // LOGGED IN VIEW
-                <motion.div 
+                <motion.div
                   key="logged-in"
                   className="profile-panel text-center"
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -316,7 +316,7 @@ export default function LoginPage() {
                   <AnimatePresence mode="wait">
                     {activeTab === "login" ? (
                       // LOGIN FORM
-                      <motion.form 
+                      <motion.form
                         key="login-form"
                         onSubmit={handleLoginSubmit(onLogin)}
                         className="auth-inputs-form"
@@ -329,8 +329,8 @@ export default function LoginPage() {
                           <label>Email</label>
                           <div className="input-wrapper">
                             <Mail className="input-icon" size={18} />
-                            <input 
-                              type="email" 
+                            <input
+                              type="email"
                               placeholder="Type your email address"
                               className={loginErrors.email ? "is-invalid" : ""}
                               {...registerLogin("email")}
@@ -343,14 +343,14 @@ export default function LoginPage() {
                           <label>Password</label>
                           <div className="input-wrapper">
                             <Lock className="input-icon" size={18} />
-                            <input 
-                              type={showPassword ? "text" : "password"} 
+                            <input
+                              type={showPassword ? "text" : "password"}
                               placeholder="Type your password"
                               className={loginErrors.password ? "is-invalid" : ""}
                               {...registerLogin("password")}
                             />
-                            <button 
-                              type="button" 
+                            <button
+                              type="button"
                               className="visibility-toggle"
                               onClick={() => setShowPassword(!showPassword)}
                             >
@@ -362,15 +362,15 @@ export default function LoginPage() {
 
                         <div className="helper-row">
                           <label className="checkbox-label">
-                            <input 
-                              type="checkbox" 
+                            <input
+                              type="checkbox"
                               {...registerLogin("rememberMe")}
                             />
                             <span>Remember Me</span>
                           </label>
-                          <a 
-                            href="#" 
-                            className="forgot-link" 
+                          <a
+                            href="#"
+                            className="forgot-link"
                             onClick={(e) => { e.preventDefault(); alert("Password reset instructions have been sent to your email!"); }}
                           >
                             Forgot Password?
@@ -388,16 +388,16 @@ export default function LoginPage() {
                         <div className="social-login-group">
                           <button type="button" className="social-btn" onClick={() => handleSocialLogin("Google")} aria-label="Continue with Google">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18" style={{ flexShrink: 0 }}>
-                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                              <path fill="#4285F4" d="M46.5 24c0-1.63-.15-3.2-.43-4.75H24v9h12.75c-.55 2.92-2.2 5.4-4.69 7.07l7.29 5.65C43.64 36.63 46.5 30.93 46.5 24z"/>
-                              <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z"/>
-                              <path fill="#34A853" d="M24 38.5c-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48c6.48 0 11.93-2.13 15.89-5.81l-7.29-5.65c-2.29 1.57-5.23 2.46-8.6 2.46z"/>
+                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                              <path fill="#4285F4" d="M46.5 24c0-1.63-.15-3.2-.43-4.75H24v9h12.75c-.55 2.92-2.2 5.4-4.69 7.07l7.29 5.65C43.64 36.63 46.5 30.93 46.5 24z" />
+                              <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z" />
+                              <path fill="#34A853" d="M24 38.5c-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48c6.48 0 11.93-2.13 15.89-5.81l-7.29-5.65c-2.29 1.57-5.23 2.46-8.6 2.46z" />
                             </svg>
                             <span>Continue with Google</span>
                           </button>
                           <button type="button" className="social-btn" onClick={() => handleSocialLogin("Apple")} aria-label="Continue with Apple">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170" width="18" height="18" fill="currentColor" style={{ flexShrink: 0 }}>
-                              <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.13-1.92-14.37-6.15-2.82-2.32-6.57-6.8-11.25-13.43-5.07-7.25-9.41-15.62-13.01-25.13-3.6-9.51-5.42-18.78-5.42-27.82 0-13.16 3.13-24.25 9.38-33.26 6.25-9.01 14.4-13.56 24.46-13.68 4.7 0 9.77 1.25 15.22 3.76 5.45 2.5 8.94 3.76 10.47 3.76 1.28 0 4.67-1.18 10.19-3.53 5.51-2.35 10.15-3.46 13.93-3.35 10.93.23 19.59 4.19 25.96 11.89-9.07 5.51-13.52 13.25-13.35 23.23.17 7.9 3.03 14.54 8.59 19.94 5.56 5.39 12.22 8.36 20 8.91-1.94 5.57-4.5 11.24-7.66 17.02zM119.5 28.56c0-6.73 2.37-12.92 7.12-18.57 5.67-6.86 12.8-10.4 21.41-10.63.12 7.21-2.27 13.65-7.18 19.34-4.8 5.61-11.75 9.5-20.85 9.86-.34-2.12-.5-4.47-.5-7z"/>
+                              <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.13-1.92-14.37-6.15-2.82-2.32-6.57-6.8-11.25-13.43-5.07-7.25-9.41-15.62-13.01-25.13-3.6-9.51-5.42-18.78-5.42-27.82 0-13.16 3.13-24.25 9.38-33.26 6.25-9.01 14.4-13.56 24.46-13.68 4.7 0 9.77 1.25 15.22 3.76 5.45 2.5 8.94 3.76 10.47 3.76 1.28 0 4.67-1.18 10.19-3.53 5.51-2.35 10.15-3.46 13.93-3.35 10.93.23 19.59 4.19 25.96 11.89-9.07 5.51-13.52 13.25-13.35 23.23.17 7.9 3.03 14.54 8.59 19.94 5.56 5.39 12.22 8.36 20 8.91-1.94 5.57-4.5 11.24-7.66 17.02zM119.5 28.56c0-6.73 2.37-12.92 7.12-18.57 5.67-6.86 12.8-10.4 21.41-10.63.12 7.21-2.27 13.65-7.18 19.34-4.8 5.61-11.75 9.5-20.85 9.86-.34-2.12-.5-4.47-.5-7z" />
                             </svg>
                             <span>Continue with Apple</span>
                           </button>
@@ -405,7 +405,7 @@ export default function LoginPage() {
                       </motion.form>
                     ) : (
                       // SIGNUP FORM
-                      <motion.form 
+                      <motion.form
                         key="signup-form"
                         onSubmit={handleSignupSubmit(onSignup)}
                         className="auth-inputs-form"
@@ -419,8 +419,8 @@ export default function LoginPage() {
                             <label>First Name</label>
                             <div className="input-wrapper">
                               <User className="input-icon" size={18} />
-                              <input 
-                                type="text" 
+                              <input
+                                type="text"
                                 placeholder="First Name"
                                 className={signupErrors.firstName ? "is-invalid" : ""}
                                 {...registerSignup("firstName")}
@@ -433,8 +433,8 @@ export default function LoginPage() {
                             <label>Last Name</label>
                             <div className="input-wrapper">
                               <User className="input-icon" size={18} />
-                              <input 
-                                type="text" 
+                              <input
+                                type="text"
                                 placeholder="Last Name"
                                 className={signupErrors.lastName ? "is-invalid" : ""}
                                 {...registerSignup("lastName")}
@@ -448,8 +448,8 @@ export default function LoginPage() {
                           <label>Email</label>
                           <div className="input-wrapper">
                             <Mail className="input-icon" size={18} />
-                            <input 
-                              type="email" 
+                            <input
+                              type="email"
                               placeholder="Type your email address"
                               className={signupErrors.email ? "is-invalid" : ""}
                               {...registerSignup("email")}
@@ -462,8 +462,8 @@ export default function LoginPage() {
                           <label>Mobile Number</label>
                           <div className="input-wrapper">
                             <Phone className="input-icon" size={18} />
-                            <input 
-                              type="tel" 
+                            <input
+                              type="tel"
                               placeholder="Type your mobile number"
                               className={signupErrors.mobileNumber ? "is-invalid" : ""}
                               {...registerSignup("mobileNumber")}
@@ -476,14 +476,14 @@ export default function LoginPage() {
                           <label>Password</label>
                           <div className="input-wrapper">
                             <Lock className="input-icon" size={18} />
-                            <input 
-                              type={showPassword ? "text" : "password"} 
+                            <input
+                              type={showPassword ? "text" : "password"}
                               placeholder="Type your password"
                               className={signupErrors.password ? "is-invalid" : ""}
                               {...registerSignup("password")}
                             />
-                            <button 
-                              type="button" 
+                            <button
+                              type="button"
                               className="visibility-toggle"
                               onClick={() => setShowPassword(!showPassword)}
                             >
@@ -494,8 +494,8 @@ export default function LoginPage() {
                           {/* Segmented strength indicator */}
                           <div className="password-strength-indicator">
                             {[1, 2, 3, 4].map((seg) => (
-                              <span 
-                                key={seg} 
+                              <span
+                                key={seg}
                                 className={`strength-segment ${pwdStrength >= seg ? getStrengthClass(pwdStrength) : ""}`}
                               />
                             ))}
@@ -508,14 +508,14 @@ export default function LoginPage() {
                           <label>Confirm Password</label>
                           <div className="input-wrapper">
                             <Lock className="input-icon" size={18} />
-                            <input 
-                              type={showConfirmPassword ? "text" : "password"} 
+                            <input
+                              type={showConfirmPassword ? "text" : "password"}
                               placeholder="Confirm your password"
                               className={signupErrors.confirmPassword ? "is-invalid" : ""}
                               {...registerSignup("confirmPassword")}
                             />
-                            <button 
-                              type="button" 
+                            <button
+                              type="button"
                               className="visibility-toggle"
                               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             >
@@ -527,8 +527,8 @@ export default function LoginPage() {
 
                         <div className="helper-row">
                           <label className="checkbox-label">
-                            <input 
-                              type="checkbox" 
+                            <input
+                              type="checkbox"
                               {...registerSignup("agreeTerms")}
                             />
                             <span>I agree to <Link href="#" onClick={(e) => { e.preventDefault(); alert("Terms & Conditions Modal"); }}>Terms & Conditions</Link></span>
@@ -547,16 +547,16 @@ export default function LoginPage() {
                         <div className="social-login-group">
                           <button type="button" className="social-btn" onClick={() => handleSocialLogin("Google")} aria-label="Continue with Google">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18" style={{ flexShrink: 0 }}>
-                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                              <path fill="#4285F4" d="M46.5 24c0-1.63-.15-3.2-.43-4.75H24v9h12.75c-.55 2.92-2.2 5.4-4.69 7.07l7.29 5.65C43.64 36.63 46.5 30.93 46.5 24z"/>
-                              <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z"/>
-                              <path fill="#34A853" d="M24 38.5c-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48c6.48 0 11.93-2.13 15.89-5.81l-7.29-5.65c-2.29 1.57-5.23 2.46-8.6 2.46z"/>
+                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                              <path fill="#4285F4" d="M46.5 24c0-1.63-.15-3.2-.43-4.75H24v9h12.75c-.55 2.92-2.2 5.4-4.69 7.07l7.29 5.65C43.64 36.63 46.5 30.93 46.5 24z" />
+                              <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z" />
+                              <path fill="#34A853" d="M24 38.5c-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48c6.48 0 11.93-2.13 15.89-5.81l-7.29-5.65c-2.29 1.57-5.23 2.46-8.6 2.46z" />
                             </svg>
                             <span>Continue with Google</span>
                           </button>
                           <button type="button" className="social-btn" onClick={() => handleSocialLogin("Apple")} aria-label="Continue with Apple">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170" width="18" height="18" fill="currentColor" style={{ flexShrink: 0 }}>
-                              <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.13-1.92-14.37-6.15-2.82-2.32-6.57-6.8-11.25-13.43-5.07-7.25-9.41-15.62-13.01-25.13-3.6-9.51-5.42-18.78-5.42-27.82 0-13.16 3.13-24.25 9.38-33.26 6.25-9.01 14.4-13.56 24.46-13.68 4.7 0 9.77 1.25 15.22 3.76 5.45 2.5 8.94 3.76 10.47 3.76 1.28 0 4.67-1.18 10.19-3.53 5.51-2.35 10.15-3.46 13.93-3.35 10.93.23 19.59 4.19 25.96 11.89-9.07 5.51-13.52 13.25-13.35 23.23.17 7.9 3.03 14.54 8.59 19.94 5.56 5.39 12.22 8.36 20 8.91-1.94 5.57-4.5 11.24-7.66 17.02zM119.5 28.56c0-6.73 2.37-12.92 7.12-18.57 5.67-6.86 12.8-10.4 21.41-10.63.12 7.21-2.27 13.65-7.18 19.34-4.8 5.61-11.75 9.5-20.85 9.86-.34-2.12-.5-4.47-.5-7z"/>
+                              <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.13-1.92-14.37-6.15-2.82-2.32-6.57-6.8-11.25-13.43-5.07-7.25-9.41-15.62-13.01-25.13-3.6-9.51-5.42-18.78-5.42-27.82 0-13.16 3.13-24.25 9.38-33.26 6.25-9.01 14.4-13.56 24.46-13.68 4.7 0 9.77 1.25 15.22 3.76 5.45 2.5 8.94 3.76 10.47 3.76 1.28 0 4.67-1.18 10.19-3.53 5.51-2.35 10.15-3.46 13.93-3.35 10.93.23 19.59 4.19 25.96 11.89-9.07 5.51-13.52 13.25-13.35 23.23.17 7.9 3.03 14.54 8.59 19.94 5.56 5.39 12.22 8.36 20 8.91-1.94 5.57-4.5 11.24-7.66 17.02zM119.5 28.56c0-6.73 2.37-12.92 7.12-18.57 5.67-6.86 12.8-10.4 21.41-10.63.12 7.21-2.27 13.65-7.18 19.34-4.8 5.61-11.75 9.5-20.85 9.86-.34-2.12-.5-4.47-.5-7z" />
                             </svg>
                             <span>Continue with Apple</span>
                           </button>
@@ -573,12 +573,12 @@ export default function LoginPage() {
             </AnimatePresence>
           </div>
         </div>
-        
+
         {/* Mobile Bottom Wave Decoration */}
         <div className="auth-mobile-bottom-wave">
           <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path 
-              d="M0 64L48 69.3C96 75 192 85 288 80C384 75 480 53 576 48C672 43 768 53 864 64C960 75 1056 85 1152 80C1248 75 1344 53 1392 42.7L1440 32V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V64Z" 
+            <path
+              d="M0 64L48 69.3C96 75 192 85 288 80C384 75 480 53 576 48C672 43 768 53 864 64C960 75 1056 85 1152 80C1248 75 1344 53 1392 42.7L1440 32V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V64Z"
               fill="#FF6A00"
             />
           </svg>
