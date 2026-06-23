@@ -366,12 +366,12 @@ $brand-black: #1a1a1a;
 }
 
 .social-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   width: 100%;
-  padding: 12px;
+  padding: 13px 24px;
   border: 1.5px solid rgba($brand-black, 0.08);
   border-radius: 50px;
   background-color: #ffffff;
@@ -380,15 +380,31 @@ $brand-black: #1a1a1a;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    background-color: rgba($brand-black, 0.02);
-    border-color: rgba($brand-black, 0.2);
+    background-color: #ffffff;
+    border-color: rgba($brand-black, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   svg {
-    font-size: 1.1rem;
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    margin-top: 1px; // Fine-tune vertical alignment with the icon
   }
 }
 
